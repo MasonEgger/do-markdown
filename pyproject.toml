@@ -1,0 +1,39 @@
+[project]
+name = "do-markdown"
+version = "0.1.0"
+description = "Python-Markdown extensions ported from DigitalOcean's do-markdownit"
+readme = "README.md"
+authors = [
+    { name = "Mason Egger", email = "mason@masonegger.com" }
+]
+requires-python = ">=3.14"
+license = "MIT"
+dependencies = [
+    "markdown>=3.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pymdown-extensions>=10.5",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+strict = true
+python_version = "3.14"
