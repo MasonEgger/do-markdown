@@ -13,11 +13,11 @@
 - [x] 1.10 Add mypy to dev dependencies, configure [tool.mypy] strict, update justfile check command
 
 ## Step 2: Highlight Extension (`<^>...<^>`)
-- [ ] 2.1 RED: Write tests in tests/test_highlight.py (inline, code, fenced, multi, edge cases)
-- [ ] 2.2 GREEN: Implement src/do_markdown/highlight.py (InlineProcessor + Postprocessor)
-- [ ] 2.3 Run tests, verify all pass
-- [ ] 2.4 REFACTOR: Review HTML escaping and code block handling
-- [ ] 2.5 Run full verification (just check)
+- [x] 2.1 RED: Write tests in tests/test_highlight.py (inline, code, fenced, multi, edge cases)
+- [x] 2.2 GREEN: Implement src/do_markdown/highlight.py (InlineProcessor + Postprocessor)
+- [x] 2.3 Run tests, verify all pass
+- [x] 2.4 REFACTOR: Review HTML escaping and code block handling
+- [x] 2.5 Run full verification (just check)
 
 ## Step 3: Fence Extension — Directive Parsing & Labels
 - [ ] 3.1 RED: Write tests in tests/test_fence.py (label, secondary_label, both, no directives, special chars)

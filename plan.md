@@ -7,7 +7,7 @@
 | Step | Description | Status |
 |------|-------------|--------|
 | 1 | Project Scaffolding | Done |
-| 2 | Highlight Extension (`<^>...<^>`) | Not Started |
+| 2 | Highlight Extension (`<^>...<^>`) | Done |
 | 3 | Fence Extension — Directive Parsing & Labels | Not Started |
 | 4 | Fence Extension — Environment Classes | Not Started |
 | 5 | Fence Extension — Line Prefixes | Not Started |
