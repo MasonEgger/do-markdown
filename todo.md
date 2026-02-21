@@ -20,11 +20,11 @@
 - [x] 2.5 Run full verification (just check)
 
 ## Step 3: Fence Extension — Directive Parsing & Labels
-- [ ] 3.1 RED: Write tests in tests/test_fence.py (label, secondary_label, both, no directives, special chars)
-- [ ] 3.2 GREEN: Implement src/do_markdown/fence.py (FencePreprocessor + FencePostprocessor + FenceExtension)
-- [ ] 3.3 Run fence tests, verify all pass
-- [ ] 3.4 REFACTOR: Review HTML escaping, nested fences, blank line handling
-- [ ] 3.5 Run full verification (just check)
+- [x] 3.1 RED: Write tests in tests/test_fence.py (label, secondary_label, both, no directives, special chars)
+- [x] 3.2 GREEN: Implement src/do_markdown/fence.py (FencePreprocessor + FencePostprocessor + FenceExtension)
+- [x] 3.3 Run fence tests, verify all pass
+- [x] 3.4 REFACTOR: Review HTML escaping, nested fences, blank line handling
+- [x] 3.5 Run full verification (just check)
 
 ## Step 4: Fence Extension — Environment Classes
 - [ ] 4.1 RED: Write environment tests (basic, allowed list, combined with label/secondary_label)

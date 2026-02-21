@@ -20,16 +20,16 @@ class HighlightInlineProcessor(InlineProcessor):
     :param md: The Markdown instance.
     """
 
-    def handleMatch(self, m: re.Match[str], data: str) -> tuple[etree.Element, int, int]:  # type: ignore[override]
+    def handleMatch(self, match: re.Match[str], data: str) -> tuple[etree.Element, int, int]:  # type: ignore[override]
         """Create a ``<mark>`` element from the matched text.
 
-        :param m: The regex match object.
+        :param match: The regex match object.
         :param data: The full source string being processed.
         :returns: A tuple of (element, start, end).
         """
-        el = etree.Element("mark")
-        el.text = m.group(1)
-        return el, m.start(0), m.end(0)
+        mark_element = etree.Element("mark")
+        mark_element.text = match.group(1)
+        return mark_element, match.start(0), match.end(0)
 
 
 class HighlightPostprocessor(Postprocessor):

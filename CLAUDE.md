@@ -46,6 +46,7 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 - RST docstrings (`:param:`, `:returns:`) on public interfaces
 - `line-length = 120`, `target-version = "py314"`
 - Every source file starts with a 2-line `# ABOUTME:` comment
+- **Descriptive variable names always** — single-letter variables are NEVER allowed (`line_index` not `i`, `label_match` not `m`, `mark_element` not `el`)
 - No trivial wrappers — call `html.escape()` directly, don't wrap stdlib functions
 - HTML output must match the do-markdownit reference format (see `plan.md` HTML Output Contracts)
 
