@@ -15,6 +15,7 @@ from markdown.preprocessors import Preprocessor
 FENCE_RE = re.compile(r"^(`{3,}|~{3,})")
 LABEL_RE = re.compile(r"^\[label (.+)\]$")
 SECONDARY_LABEL_RE = re.compile(r"^\[secondary_label (.+)\]$")
+ENVIRONMENT_RE = re.compile(r"^\[environment (.+)\]$")
 COMMENT_RE = re.compile(r"<!-- do-fence:(.*?) -->")
 
 
@@ -66,8 +67,10 @@ class FencePreprocessor(Preprocessor):
                     break
 
                 if directive_zone:
-                    label_match = LABEL_RE.match(lines[scan_index].strip())
-                    secondary_match = SECONDARY_LABEL_RE.match(lines[scan_index].strip())
+                    stripped_line = lines[scan_index].strip()
+                    label_match = LABEL_RE.match(stripped_line)
+                    secondary_match = SECONDARY_LABEL_RE.match(stripped_line)
+                    environment_match = ENVIRONMENT_RE.match(stripped_line)
 
                     if label_match:
                         metadata["label"] = label_match.group(1)
@@ -77,6 +80,15 @@ class FencePreprocessor(Preprocessor):
                         metadata["secondary_label"] = secondary_match.group(1)
                         scan_index += 1
                         continue
+                    elif environment_match:
+                        env_name = environment_match.group(1)
+                        allowed = self.extension.getConfig("allowed_environments")
+                        if not allowed or env_name in allowed:
+                            metadata["environment"] = env_name
+                            scan_index += 1
+                            continue
+                        else:
+                            directive_zone = False
                     else:
                         directive_zone = False
 
@@ -101,6 +113,7 @@ class FencePreprocessor(Preprocessor):
 
 
 CODE_TAG_RE = re.compile(r"<code[^>]*>")
+PRE_TAG_RE = re.compile(r"<pre[^>]*>")
 
 
 class FencePostprocessor(Postprocessor):
@@ -134,6 +147,18 @@ class FencePostprocessor(Postprocessor):
             # Replace the comment with the label div (or empty string)
             text = text[:comment_start] + label_html + text[comment_end:]
 
+            if "environment" in metadata:
+                env_name = re.sub(r"[^a-zA-Z0-9-]", "", metadata["environment"])
+                env_class = f"environment-{env_name}"
+                pre_match = PRE_TAG_RE.search(text, comment_start)
+                if pre_match:
+                    pre_tag = pre_match.group(0)
+                    if 'class="' in pre_tag:
+                        new_pre_tag = pre_tag.replace('class="', f'class="{env_class} ')
+                    else:
+                        new_pre_tag = pre_tag.replace("<pre", f'<pre class="{env_class}"')
+                    text = text[: pre_match.start()] + new_pre_tag + text[pre_match.end() :]
+
             if "secondary_label" in metadata:
                 secondary_text = html.escape(metadata["secondary_label"])
                 secondary_class = self.extension.getConfig("secondary_label_class")
@@ -154,10 +179,11 @@ class FenceExtension(Extension):
     :param \\*\\*kwargs: Configuration options passed to the extension.
     """
 
-    def __init__(self, **kwargs: str) -> None:
-        self.config = {
+    def __init__(self, **kwargs: object) -> None:
+        self.config: dict[str, list[object]] = {
             "label_class": ["code-label", "CSS class for the label div"],
             "secondary_label_class": ["secondary-code-label", "CSS class for the secondary label div"],
+            "allowed_environments": [[], "List of allowed environment names (empty = allow all)"],
         }
         super().__init__(**kwargs)
 
@@ -173,7 +199,7 @@ class FenceExtension(Extension):
         md.postprocessors.register(postprocessor, "do-fence-post", 25)
 
 
-def makeExtension(**kwargs: str) -> FenceExtension:
+def makeExtension(**kwargs: object) -> FenceExtension:
     """Create and return the FenceExtension instance.
 
     :param \\*\\*kwargs: Configuration options.

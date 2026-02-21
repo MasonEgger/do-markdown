@@ -9,7 +9,7 @@
 | 1 | Project Scaffolding | Done |
 | 2 | Highlight Extension (`<^>...<^>`) | Done |
 | 3 | Fence Extension — Directive Parsing & Labels | Done |
-| 4 | Fence Extension — Environment Classes | Not Started |
+| 4 | Fence Extension — Environment Classes | Done |
 | 5 | Fence Extension — Line Prefixes | Not Started |
 | 6 | YouTube Embed | Not Started |
 | 7 | CodePen Embed | Not Started |

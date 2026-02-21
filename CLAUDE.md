@@ -53,7 +53,7 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 ## Testing Approach
 
 - TDD: write failing tests first (RED), implement (GREEN), then refactor
-- Each extension has its own test file with a `_render(source)` helper that creates a `markdown.Markdown` instance with the extension loaded
+- Each extension has its own test file with a `render_<name>(source)` helper (e.g., `render_fence()`) that creates a `markdown.Markdown` instance with the extension loaded
 - `tests/conftest.py` provides `md_with_superfences` fixture matching the real site stack
 - Test **our extension logic only** — do not test Python-Markdown or pymdownx behavior
 - Do not test trivial code; test behavior and outcomes

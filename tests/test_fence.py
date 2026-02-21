@@ -1,14 +1,17 @@
-# ABOUTME: Tests for the fence extension handling label and secondary_label directives.
-# Verifies directive extraction, HTML injection, and edge cases for code block labels.
+# ABOUTME: Tests for the fence extension handling label, secondary_label, and environment directives.
+# Verifies directive extraction, HTML injection, environment classes, and edge cases for code blocks.
 
 import markdown
 
 
-def render_fence(source: str) -> str:
+def render_fence(source: str, allowed_environments: list[str] | None = None) -> str:
     """Render source with superfences, highlight, and fence extensions loaded."""
+    extension_configs: dict[str, dict[str, object]] = {"pymdownx.highlight": {"pygments_lang_class": True}}
+    if allowed_environments is not None:
+        extension_configs["do_markdown.fence"] = {"allowed_environments": allowed_environments}
     md = markdown.Markdown(
         extensions=["pymdownx.superfences", "pymdownx.highlight", "do_markdown.fence"],
-        extension_configs={"pymdownx.highlight": {"pygments_lang_class": True}},
+        extension_configs=extension_configs,
     )
     return md.convert(source)
 
@@ -92,3 +95,65 @@ class TestBothLabels:
         result = render_fence(source)
         assert "[label file.py]" not in result
         assert "[secondary_label Output]" not in result
+
+
+class TestEnvironmentBasic:
+    def test_environment_class_on_pre(self) -> None:
+        source = "```\n[environment local]\nssh root@server\n```"
+        result = render_fence(source)
+        assert "environment-local" in result
+
+    def test_environment_directive_stripped(self) -> None:
+        source = "```\n[environment local]\nssh root@server\n```"
+        result = render_fence(source)
+        assert "[environment local]" not in result
+
+
+class TestEnvironmentAllowedList:
+    def test_allowed_environment_applied(self) -> None:
+        source = "```\n[environment local]\ncode\n```"
+        result = render_fence(source, allowed_environments=["local", "staging", "production"])
+        assert "environment-local" in result
+
+    def test_disallowed_environment_not_applied(self) -> None:
+        source = "```\n[environment unknown]\ncode\n```"
+        result = render_fence(source, allowed_environments=["local", "staging", "production"])
+        assert "environment-unknown" not in result
+        assert "[environment unknown]" in result
+
+    def test_empty_allowed_list_allows_all(self) -> None:
+        source = "```\n[environment custom]\ncode\n```"
+        result = render_fence(source, allowed_environments=[])
+        assert "environment-custom" in result
+
+
+class TestEnvironmentWithLabel:
+    def test_environment_and_label_together(self) -> None:
+        source = "```\n[environment local]\n[label server.sh]\ncode\n```"
+        result = render_fence(source)
+        assert "environment-local" in result
+        assert '<div class="code-label" title="server.sh">server.sh</div>' in result
+
+    def test_environment_and_secondary_label_together(self) -> None:
+        source = "```\n[environment second]\n[secondary_label Output]\ncode\n```"
+        result = render_fence(source)
+        assert "environment-second" in result
+        assert '<div class="secondary-code-label" title="Output">Output</div>' in result
+
+
+class TestEnvironmentVariants:
+    def test_second_environment(self) -> None:
+        source = "```\n[environment second]\ncode\n```"
+        result = render_fence(source)
+        assert "environment-second" in result
+
+    def test_third_environment(self) -> None:
+        source = "```\n[environment third]\ncode\n```"
+        result = render_fence(source)
+        assert "environment-third" in result
+
+    def test_directive_order_environment_after_label(self) -> None:
+        source = "```\n[label server.sh]\n[environment local]\ncode\n```"
+        result = render_fence(source)
+        assert "environment-local" in result
+        assert '<div class="code-label" title="server.sh">server.sh</div>' in result

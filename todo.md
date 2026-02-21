@@ -27,11 +27,11 @@
 - [x] 3.5 Run full verification (just check)
 
 ## Step 4: Fence Extension — Environment Classes
-- [ ] 4.1 RED: Write environment tests (basic, allowed list, combined with label/secondary_label)
-- [ ] 4.2 GREEN: Extend fence.py with ENVIRONMENT_RE, preprocessor extraction, postprocessor class injection
-- [ ] 4.3 Run fence tests, verify all pass
-- [ ] 4.4 REFACTOR: Sanitize environment names, handle directive ordering
-- [ ] 4.5 Run full verification (just check)
+- [x] 4.1 RED: Write environment tests (basic, allowed list, combined with label/secondary_label)
+- [x] 4.2 GREEN: Extend fence.py with ENVIRONMENT_RE, preprocessor extraction, postprocessor class injection
+- [x] 4.3 Run fence tests, verify all pass
+- [x] 4.4 REFACTOR: Sanitize environment names, handle directive ordering
+- [x] 4.5 Run full verification (just check)
 
 ## Step 5: Fence Extension — Line Prefixes
 - [ ] 5.1 RED: Write prefix tests (line_numbers, command, super_user, custom_prefix, \s, combined)
