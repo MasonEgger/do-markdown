@@ -34,13 +34,13 @@
 - [x] 4.5 Run full verification (just check)
 
 ## Step 5: Fence Extension — Line Prefixes
-- [ ] 5.1 RED: Write prefix tests (line_numbers, command, super_user, custom_prefix, \s, combined)
-- [ ] 5.2 GREEN: Extend fence.py with prefix parsing, info string cleaning, line wrapping
-- [ ] 5.3 Run fence tests, verify all pass
-- [ ] 5.4 RED: Write full combo integration test (line_numbers + environment + label + language)
-- [ ] 5.5 GREEN: Fix any integration issues
-- [ ] 5.6 REFACTOR: Extract line-wrapping helper, handle Pygments output
-- [ ] 5.7 Run full verification (just check)
+- [x] 5.1 RED: Write prefix tests (line_numbers, command, super_user, custom_prefix, \s, combined)
+- [x] 5.2 GREEN: Extend fence.py with prefix parsing, info string cleaning, line wrapping
+- [x] 5.3 Run fence tests, verify all pass
+- [x] 5.4 RED: Write full combo integration test (line_numbers + environment + label + language)
+- [x] 5.5 GREEN: Fix any integration issues
+- [x] 5.6 REFACTOR: Extract line-wrapping helper, handle Pygments output
+- [x] 5.7 Run full verification (just check)
 
 ## Step 6: YouTube Embed
 - [ ] 6.1 RED: Write tests in tests/test_youtube.py (basic, dimensions, encoding, aspect ratio)

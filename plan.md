@@ -10,7 +10,7 @@
 | 2 | Highlight Extension (`<^>...<^>`) | Done |
 | 3 | Fence Extension — Directive Parsing & Labels | Done |
 | 4 | Fence Extension — Environment Classes | Done |
-| 5 | Fence Extension — Line Prefixes | Not Started |
+| 5 | Fence Extension — Line Prefixes | Done |
 | 6 | YouTube Embed | Not Started |
 | 7 | CodePen Embed | Not Started |
 | 8 | Twitter & Instagram Embeds | Not Started |

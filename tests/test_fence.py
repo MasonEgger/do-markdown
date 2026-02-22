@@ -1,5 +1,5 @@
-# ABOUTME: Tests for the fence extension handling label, secondary_label, and environment directives.
-# Verifies directive extraction, HTML injection, environment classes, and edge cases for code blocks.
+# ABOUTME: Tests for the fence extension handling label, secondary_label, environment, and prefix directives.
+# Verifies directive extraction, HTML injection, environment classes, line prefixes, and edge cases.
 
 import markdown
 
@@ -157,3 +157,106 @@ class TestEnvironmentVariants:
         result = render_fence(source)
         assert "environment-local" in result
         assert '<div class="code-label" title="server.sh">server.sh</div>' in result
+
+
+class TestLineNumbers:
+    def test_line_numbers_data_prefix(self) -> None:
+        source = "```line_numbers,js\nconst a = 1;\nconst b = 2;\n```"
+        result = render_fence(source)
+        assert 'data-prefix="1"' in result
+        assert 'data-prefix="2"' in result
+
+    def test_line_numbers_ol_wrapper(self) -> None:
+        source = "```line_numbers,js\nconst a = 1;\nconst b = 2;\n```"
+        result = render_fence(source)
+        assert "<ol>" in result
+        assert "</ol>" in result
+
+    def test_line_numbers_prefixed_class(self) -> None:
+        source = "```line_numbers,js\nconst a = 1;\n```"
+        result = render_fence(source)
+        assert "prefixed" in result
+        assert "line_numbers" in result
+
+    def test_line_numbers_with_language(self) -> None:
+        source = "```line_numbers,python\nprint('hi')\n```"
+        result = render_fence(source)
+        assert 'data-prefix="1"' in result
+        assert "python" in result
+
+
+class TestCommand:
+    def test_command_dollar_prefix(self) -> None:
+        source = "```command\nsudo apt update\n```"
+        result = render_fence(source)
+        assert 'data-prefix="$"' in result
+
+    def test_command_prefixed_class(self) -> None:
+        source = "```command\nsudo apt update\n```"
+        result = render_fence(source)
+        assert "prefixed" in result
+        assert "command" in result
+
+    def test_command_bash_language(self) -> None:
+        source = "```command\nsudo apt update\n```"
+        result = render_fence(source)
+        assert "bash" in result
+
+
+class TestSuperUser:
+    def test_super_user_hash_prefix(self) -> None:
+        source = "```super_user\nshutdown\n```"
+        result = render_fence(source)
+        assert 'data-prefix="#"' in result
+
+    def test_super_user_prefixed_class(self) -> None:
+        source = "```super_user\nshutdown\n```"
+        result = render_fence(source)
+        assert "prefixed" in result
+        assert "super_user" in result
+
+
+class TestCustomPrefix:
+    def test_custom_prefix_value(self) -> None:
+        source = "```custom_prefix(mysql>)\nSELECT 1;\n```"
+        result = render_fence(source)
+        assert 'data-prefix="mysql&gt;"' in result
+
+    def test_custom_prefix_class(self) -> None:
+        source = "```custom_prefix(mysql>)\nSELECT 1;\n```"
+        result = render_fence(source)
+        assert "prefixed" in result
+        assert "custom_prefix" in result
+
+    def test_custom_prefix_backslash_s(self) -> None:
+        source = "```custom_prefix((srv)\\smysql>)\nSELECT 1;\n```"
+        result = render_fence(source)
+        assert 'data-prefix="(srv) mysql&gt;"' in result
+
+
+class TestPrefixCombined:
+    def test_command_with_environment_and_label(self) -> None:
+        source = "```command\n[environment local]\n[label server.sh]\nssh root@ip\n```"
+        result = render_fence(source)
+        assert 'data-prefix="$"' in result
+        assert "environment-local" in result
+        assert '<div class="code-label" title="server.sh">server.sh</div>' in result
+
+    def test_no_prefix_plain_code(self) -> None:
+        source = "```python\ncode\n```"
+        result = render_fence(source)
+        assert "<ol>" not in result
+        assert "data-prefix" not in result
+        assert "prefixed" not in result
+
+
+class TestPrefixFullCombo:
+    def test_line_numbers_environment_label_language(self) -> None:
+        source = "```line_numbers,html\n[environment second]\n[label index.html]\n<html>\n<body>\n</body>\n</html>\n```"
+        result = render_fence(source)
+        assert 'data-prefix="1"' in result
+        assert 'data-prefix="4"' in result
+        assert "environment-second" in result
+        assert '<div class="code-label" title="index.html">index.html</div>' in result
+        assert "prefixed" in result
+        assert "line_numbers" in result
