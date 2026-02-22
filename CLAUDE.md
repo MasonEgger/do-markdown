@@ -10,17 +10,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 just install          # uv sync
-just test             # uv run pytest
-just test-verbose     # uv run pytest -v
-just lint             # uv run ruff check src/ tests/
-just format           # uv run ruff format src/ tests/
-just check            # Full verification: ruff check + ruff format --check + mypy --strict + pytest
+just test             # pytest with coverage
+just test-verbose     # pytest -v with coverage
+just lint             # ruff check + ruff format --check
+just format           # ruff format
+just typecheck        # mypy --strict
+just check            # runs test + lint + typecheck
 ```
 
 Run a single test file: `uv run pytest tests/test_highlight.py -v`
 Run a single test: `uv run pytest tests/test_highlight.py::TestInlineHighlight::test_basic_inline -v`
 
-**`just check` must pass (all four steps) before any step is considered complete.**
+**`just typecheck` must pass (all four steps) before any step is considered complete.**
 
 ## Project Overview
 

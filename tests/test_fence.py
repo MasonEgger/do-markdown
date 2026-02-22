@@ -68,6 +68,13 @@ class TestNoDirectives:
         result = render_fence(source)
         assert "code-label" not in result
 
+    def test_text_surrounding_fence_preserved(self) -> None:
+        source = "Some text before\n\n```\n[label test.py]\ncode\n```\n\nSome text after"
+        result = render_fence(source)
+        assert "Some text before" in result
+        assert "Some text after" in result
+        assert '<div class="code-label" title="test.py">test.py</div>' in result
+
 
 class TestLabelSpecialChars:
     def test_label_with_path(self) -> None:

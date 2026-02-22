@@ -43,12 +43,12 @@
 - [x] 5.7 Run full verification (just check)
 
 ## Step 6: YouTube Embed
-- [ ] 6.1 RED: Write tests in tests/test_youtube.py (basic, dimensions, encoding, aspect ratio)
-- [ ] 6.2 GREEN: Implement src/do_markdown/_util.py (reduce_fraction only, use html.escape() directly)
-- [ ] 6.3 GREEN: Implement src/do_markdown/youtube.py (YouTubePreprocessor + YouTubeExtension)
-- [ ] 6.4 Run YouTube tests, verify all pass
-- [ ] 6.5 REFACTOR: Verify HTML matches reference, check line matching
-- [ ] 6.6 Run full verification (just check)
+- [x] 6.1 RED: Write tests in tests/test_youtube.py (basic, dimensions, encoding, aspect ratio)
+- [x] 6.2 GREEN: Implement src/do_markdown/_util.py (reduce_fraction only, use html.escape() directly)
+- [x] 6.3 GREEN: Implement src/do_markdown/youtube.py (YouTubePreprocessor + YouTubeExtension)
+- [x] 6.4 Run YouTube tests, verify all pass
+- [x] 6.5 REFACTOR: Verify HTML matches reference, check line matching
+- [x] 6.6 Run full verification (just check)
 
 ## Step 7: CodePen Embed
 - [ ] 7.1 RED: Write tests in tests/test_codepen.py (basic, theme, height, tabs, lazy, editable, combined, script)
