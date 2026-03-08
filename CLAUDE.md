@@ -21,7 +21,7 @@ just check            # runs test + lint + typecheck
 Run a single test file: `uv run pytest tests/test_highlight.py -v`
 Run a single test: `uv run pytest tests/test_highlight.py::TestInlineHighlight::test_basic_inline -v`
 
-**`just typecheck` must pass (all four steps) before any step is considered complete.**
+**`just check` must pass before any step is considered complete.**
 
 ## Project Overview
 
@@ -39,6 +39,8 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 
 **Highlight extension** (`highlight.py`): InlineProcessor (priority 175) for regular text + Postprocessor (priority 25) for HTML-escaped `<^>` markers inside code blocks.
 
+**Script injection pattern** (codepen, twitter, instagram): The Preprocessor sets a `found` boolean when it matches any embed. The Postprocessor checks `self.preprocessor.found` and appends the `<script>` tag exactly once at the end of the rendered content.
+
 ## Code Conventions
 
 - `__init__.py` is **always empty** — never add anything to it
@@ -54,7 +56,7 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 ## Testing Approach
 
 - TDD: write failing tests first (RED), implement (GREEN), then refactor
-- Each extension has its own test file with a `render_<name>(source)` helper (e.g., `render_fence()`) that creates a `markdown.Markdown` instance with the extension loaded
+- Each extension has its own test file with a `render(source)` helper that creates a `markdown.Markdown` instance with the extension loaded (fence tests use `render_fence()`)
 - `tests/conftest.py` provides `md_with_superfences` fixture matching the real site stack
 - Test **our extension logic only** — do not test Python-Markdown or pymdownx behavior
 - Do not test trivial code; test behavior and outcomes

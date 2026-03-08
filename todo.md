@@ -51,11 +51,11 @@
 - [x] 6.6 Run full verification (just check)
 
 ## Step 7: CodePen Embed
-- [ ] 7.1 RED: Write tests in tests/test_codepen.py (basic, theme, height, tabs, lazy, editable, combined, script)
-- [ ] 7.2 GREEN: Implement src/do_markdown/codepen.py (Preprocessor + Postprocessor for script)
-- [ ] 7.3 Run CodePen tests, verify all pass
-- [ ] 7.4 REFACTOR: Verify HTML matches reference, check escaping
-- [ ] 7.5 Run full verification (just check)
+- [x] 7.1 RED: Write tests in tests/test_codepen.py (basic, theme, height, tabs, lazy, editable, combined, script)
+- [x] 7.2 GREEN: Implement src/do_markdown/codepen.py (Preprocessor + Postprocessor for script)
+- [x] 7.3 Run CodePen tests, verify all pass
+- [x] 7.4 REFACTOR: Verify HTML matches reference, check escaping
+- [x] 7.5 Run full verification (just check)
 
 ## Step 8: Twitter & Instagram Embeds
 - [ ] 8.1 RED: Write Twitter tests in tests/test_twitter.py (basic, x.com, theme, align, width clamp, script)
