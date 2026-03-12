@@ -14,7 +14,7 @@
 | 6 | YouTube Embed | Done |
 | 7 | CodePen Embed | Done |
 | 8 | Twitter & Instagram Embeds | Done |
-| 9 | Slideshow & Image Compare Embeds | Not Started |
+| 9 | Slideshow & Image Compare Embeds | Done |
 | 10 | CSS Stylesheet & MkDocs Integration | Not Started |
 
 ## Overview

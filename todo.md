@@ -67,13 +67,13 @@
 - [x] 8.7 Run full verification (just check)
 
 ## Step 9: Slideshow & Image Compare Embeds
-- [ ] 9.1 RED: Write Slideshow tests in tests/test_slideshow.py (basic, dimensions, min images, escaping)
-- [ ] 9.2 RED: Write Image Compare tests in tests/test_image_compare.py (basic, dimensions, escaping)
-- [ ] 9.3 GREEN: Implement src/do_markdown/slideshow.py
-- [ ] 9.4 GREEN: Implement src/do_markdown/image_compare.py
-- [ ] 9.5 Run Slideshow + Image Compare tests, verify all pass
-- [ ] 9.6 REFACTOR: Review all embed extensions for consistency
-- [ ] 9.7 Run full verification (just check)
+- [x] 9.1 RED: Write Slideshow tests in tests/test_slideshow.py (basic, dimensions, min images, escaping)
+- [x] 9.2 RED: Write Image Compare tests in tests/test_image_compare.py (basic, dimensions, escaping)
+- [x] 9.3 GREEN: Implement src/do_markdown/slideshow.py
+- [x] 9.4 GREEN: Implement src/do_markdown/image_compare.py
+- [x] 9.5 Run Slideshow + Image Compare tests, verify all pass
+- [x] 9.6 REFACTOR: Review all embed extensions for consistency
+- [x] 9.7 Run full verification (just check)
 
 ## Step 10: CSS Stylesheet & MkDocs Integration
 - [ ] 10.1 Add do-markdown styles to website's docs/stylesheets/extra.css

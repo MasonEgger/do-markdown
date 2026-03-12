@@ -33,15 +33,29 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 
 **Three processor patterns:**
 
-1. **Fence extension** (`fence.py`): Preprocessor (priority 40, runs *before* `pymdownx.superfences` at ~38) extracts directives from fence content, stores metadata as `<!-- do-fence:{JSON} -->` HTML comments. Postprocessor (priority 25) applies transformations to rendered HTML. All fence features (labels, environments, prefixes) share this single coordinated extension.
+1. **Fence extension** (`fence.py`): Preprocessor extracts directives (`[label]`, `[secondary_label]`, `[environment]`) from fence content and prefix flags (`line_numbers`, `command`, `super_user`, `custom_prefix(...)`) from the info string. Stores metadata as `<!-- do-fence:{JSON} -->` HTML comments. Postprocessor applies transformations (label divs, CSS classes, `<ol><li data-prefix>` wrapping) to rendered HTML. All fence features share this single coordinated extension to avoid ordering bugs.
 
-2. **Embed extensions** (youtube, codepen, twitter, instagram, slideshow, image_compare): Preprocessor (priority 20, runs *after* superfences) matches standalone `[name ...]` lines and replaces with raw HTML. Social embeds (codepen, twitter, instagram) add a Postprocessor (priority 15) for one-time script injection.
+2. **Embed extensions** (youtube, codepen, twitter, instagram, slideshow, image_compare): Preprocessor matches standalone `[name ...]` lines and replaces with raw HTML. Social embeds (codepen, twitter, instagram) add a Postprocessor for one-time script injection.
 
-3. **Highlight extension** (`highlight.py`): InlineProcessor (priority 175) for regular text + Postprocessor (priority 25) for HTML-escaped `<^>` markers inside code blocks.
+3. **Highlight extension** (`highlight.py`): InlineProcessor for regular text + Postprocessor for HTML-escaped `<^>` markers inside code blocks.
 
-**Script injection pattern** (codepen, twitter, instagram): The Preprocessor sets a `found` boolean when it matches any embed. The Postprocessor checks `self.preprocessor.found` and appends the `<script>` tag exactly once at the end of the rendered content.
+### Processor Priority Reference
 
-**Flag parser pattern** (codepen, twitter, instagram): Each embed with flags has a module-level `_parse_flags()` (or `_parse_*_flags()`) function that takes a raw string and returns a typed dict. This keeps the preprocessor's `run()` method focused on line matching and HTML generation.
+| Priority | Type | Extension | Relationship |
+|----------|------|-----------|-------------|
+| 40 | Preprocessor | fence | Runs *before* `pymdownx.superfences` (~38) |
+| 20 | Preprocessor | all embeds | Runs *after* superfences — embed syntax in fences is already stashed |
+| 175 | InlineProcessor | highlight | Runs before emphasis |
+| 25 | Postprocessor | fence, highlight | Standard post-processing |
+| 15 | Postprocessor | codepen, twitter, instagram | Script injection (runs after other postprocessors) |
+
+### Recurring Implementation Patterns
+
+**Script injection** (codepen, twitter, instagram): The Preprocessor sets a `found` boolean when it matches any embed. The Postprocessor checks `self.preprocessor.found` and appends the `<script>` tag exactly once at the end of the rendered content.
+
+**Flag parser** (codepen, twitter, instagram): Each embed with flags has a module-level `_parse_flags()` (or `_parse_*_flags()`) function that takes a raw string and returns a typed dict. This keeps the preprocessor's `run()` method focused on line matching and HTML generation.
+
+**Dimension parser** (slideshow): Separates trailing integers (height, width) from a variable-length list of URLs by popping numeric values from the end of the argument list.
 
 **Shared utilities** (`_util.py`): Contains `reduce_fraction()` used by embed extensions for aspect-ratio calculations. Do not add trivial wrappers here.
 
@@ -61,7 +75,7 @@ Each extension is a standalone Python-Markdown extension in `src/do_markdown/` w
 ## Testing Approach
 
 - TDD: write failing tests first (RED), implement (GREEN), then refactor
-- Each extension has its own test file with a `render(source)` helper that creates a `markdown.Markdown` instance with the extension loaded (fence tests use `render_fence()`)
+- Each extension has its own test file with a `render_*(source)` helper that creates a `markdown.Markdown` instance with the extension loaded (e.g., `render_youtube()`, `render_fence()`)
 - `tests/conftest.py` provides `md_with_superfences` fixture matching the real site stack
 - Test **our extension logic only** — do not test Python-Markdown or pymdownx behavior
 - Do not test trivial code; test behavior and outcomes
