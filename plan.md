@@ -13,7 +13,7 @@
 | 5 | Fence Extension — Line Prefixes | Done |
 | 6 | YouTube Embed | Done |
 | 7 | CodePen Embed | Done |
-| 8 | Twitter & Instagram Embeds | Not Started |
+| 8 | Twitter & Instagram Embeds | Done |
 | 9 | Slideshow & Image Compare Embeds | Not Started |
 | 10 | CSS Stylesheet & MkDocs Integration | Not Started |
 

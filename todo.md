@@ -58,13 +58,13 @@
 - [x] 7.5 Run full verification (just check)
 
 ## Step 8: Twitter & Instagram Embeds
-- [ ] 8.1 RED: Write Twitter tests in tests/test_twitter.py (basic, x.com, theme, align, width clamp, script)
-- [ ] 8.2 RED: Write Instagram tests in tests/test_instagram.py (basic, caption, align, width clamp, script)
-- [ ] 8.3 GREEN: Implement src/do_markdown/twitter.py
-- [ ] 8.4 GREEN: Implement src/do_markdown/instagram.py
-- [ ] 8.5 Run Twitter + Instagram tests, verify all pass
-- [ ] 8.6 REFACTOR: Look for shared patterns, extract if 3+ extensions share logic
-- [ ] 8.7 Run full verification (just check)
+- [x] 8.1 RED: Write Twitter tests in tests/test_twitter.py (basic, x.com, theme, align, width clamp, script)
+- [x] 8.2 RED: Write Instagram tests in tests/test_instagram.py (basic, caption, align, width clamp, script)
+- [x] 8.3 GREEN: Implement src/do_markdown/twitter.py
+- [x] 8.4 GREEN: Implement src/do_markdown/instagram.py
+- [x] 8.5 Run Twitter + Instagram tests, verify all pass
+- [x] 8.6 REFACTOR: Look for shared patterns, extract if 3+ extensions share logic
+- [x] 8.7 Run full verification (just check)
 
 ## Step 9: Slideshow & Image Compare Embeds
 - [ ] 9.1 RED: Write Slideshow tests in tests/test_slideshow.py (basic, dimensions, min images, escaping)

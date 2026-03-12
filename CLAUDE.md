@@ -25,25 +25,30 @@ Run a single test: `uv run pytest tests/test_highlight.py::TestInlineHighlight::
 
 ## Project Overview
 
-Python-Markdown extensions ported from DigitalOcean's `do-markdownit` (JavaScript/markdown-it). Used with MkDocs Material via `pymdownx.superfences` and `pymdownx.highlight`. The JS reference lives at `/home/mmegger/Code/MasonEgger/do-markdownit/`.
+Python-Markdown extensions ported from DigitalOcean's `do-markdownit` (JavaScript/markdown-it). Used with MkDocs Material via `pymdownx.superfences` and `pymdownx.highlight`. The JS reference repo is `do-markdownit` (sibling directory).
 
 ## Architecture
 
 Each extension is a standalone Python-Markdown extension in `src/do_markdown/` with a `makeExtension(**kwargs)` entry point. Extensions are loaded by name (e.g., `do_markdown.highlight`).
 
-**Two processor patterns:**
+**Three processor patterns:**
 
 1. **Fence extension** (`fence.py`): Preprocessor (priority 40, runs *before* `pymdownx.superfences` at ~38) extracts directives from fence content, stores metadata as `<!-- do-fence:{JSON} -->` HTML comments. Postprocessor (priority 25) applies transformations to rendered HTML. All fence features (labels, environments, prefixes) share this single coordinated extension.
 
 2. **Embed extensions** (youtube, codepen, twitter, instagram, slideshow, image_compare): Preprocessor (priority 20, runs *after* superfences) matches standalone `[name ...]` lines and replaces with raw HTML. Social embeds (codepen, twitter, instagram) add a Postprocessor (priority 15) for one-time script injection.
 
-**Highlight extension** (`highlight.py`): InlineProcessor (priority 175) for regular text + Postprocessor (priority 25) for HTML-escaped `<^>` markers inside code blocks.
+3. **Highlight extension** (`highlight.py`): InlineProcessor (priority 175) for regular text + Postprocessor (priority 25) for HTML-escaped `<^>` markers inside code blocks.
 
 **Script injection pattern** (codepen, twitter, instagram): The Preprocessor sets a `found` boolean when it matches any embed. The Postprocessor checks `self.preprocessor.found` and appends the `<script>` tag exactly once at the end of the rendered content.
+
+**Flag parser pattern** (codepen, twitter, instagram): Each embed with flags has a module-level `_parse_flags()` (or `_parse_*_flags()`) function that takes a raw string and returns a typed dict. This keeps the preprocessor's `run()` method focused on line matching and HTML generation.
+
+**Shared utilities** (`_util.py`): Contains `reduce_fraction()` used by embed extensions for aspect-ratio calculations. Do not add trivial wrappers here.
 
 ## Code Conventions
 
 - `__init__.py` is **always empty** — never add anything to it
+- Every source file uses `from __future__ import annotations` as the first import
 - Type hints on everything, no `Any` — mypy strict is enforced
 - Absolute imports only (e.g., `from do_markdown._util import reduce_fraction`)
 - RST docstrings (`:param:`, `:returns:`) on public interfaces
