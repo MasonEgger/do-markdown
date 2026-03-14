@@ -1,0 +1,9 @@
+do-markdown
+Copyright 2026 Mason Egger
+
+This project is a Python port of do-markdownit, originally developed by
+DigitalOcean and licensed under the Apache License, Version 2.0.
+
+Original project: https://github.com/digitalocean/do-markdownit
+Copyright 2023 DigitalOcean
+Licensed under the Apache License, Version 2.0

@@ -21,3 +21,12 @@ typecheck:
     uv run mypy --strict src/
 
 check: test lint typecheck
+
+docs-build:
+    uv run mkdocs build --strict
+
+docs-serve:
+    uv run mkdocs serve
+
+docs-serve-tailnet:
+    uv run mkdocs serve -a $(tailscale ip -4):8000

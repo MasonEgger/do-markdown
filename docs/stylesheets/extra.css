@@ -1,0 +1,230 @@
+/* --- do-markdown extension styles --- */
+
+/* Code labels */
+.code-label {
+    background-color: #283618;
+    color: #fefae0;
+    padding: 0.4em 1em;
+    border-radius: 0.25em 0.25em 0 0;
+    font-size: 0.85em;
+    font-family: var(--md-code-font-family);
+    margin-bottom: 0;
+}
+
+.code-label + .highlight > pre,
+.code-label + pre {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.secondary-code-label {
+    color: #a0a0a0;
+    font-size: 0.8em;
+    font-style: italic;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #3a3a3a;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+/* Environment colors — thick left border */
+.environment-local {
+    border-left: 4px solid #4caf50 !important;
+}
+
+.environment-second {
+    border-left: 4px solid #2196f3 !important;
+}
+
+.environment-third {
+    border-left: 4px solid #ff9800 !important;
+}
+
+.environment-fourth {
+    border-left: 4px solid #9c27b0 !important;
+}
+
+.environment-fifth {
+    border-left: 4px solid #f44336 !important;
+}
+
+/* Prefixed code blocks */
+pre.prefixed code ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: none;
+}
+
+pre.prefixed code ol li {
+    position: relative;
+    padding-left: 2.5em;
+    white-space: pre;
+}
+
+pre.prefixed code ol li::before {
+    content: attr(data-prefix);
+    position: absolute;
+    left: 0;
+    width: 2em;
+    text-align: right;
+    color: #6a737d;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Wider prefix space for custom/long prefixes */
+pre.prefixed.custom_prefix code ol li {
+    padding-left: 10em;
+}
+
+pre.prefixed.custom_prefix code ol li::before {
+    width: 9.5em;
+}
+
+/* YouTube */
+iframe.youtube {
+    max-width: 100%;
+    display: block;
+    margin: 1em auto;
+    border: none;
+}
+
+/* Twitter */
+.twitter {
+    margin: 1em 0;
+}
+
+/* Instagram */
+.instagram {
+    margin: 1em 0;
+}
+
+/* Slideshow */
+.slideshow {
+    position: relative;
+    overflow: hidden;
+    margin: 1em auto;
+    border-radius: 0.25em;
+}
+
+.slideshow .slides {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slideshow .slides::-webkit-scrollbar {
+    display: none;
+}
+
+.slideshow .slides img {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slideshow .action {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 2.5em;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    padding: 0.2em 0.4em;
+    z-index: 1;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1;
+    border-radius: 0.15em;
+    transition: background 0.2s;
+}
+
+.slideshow .action:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.slideshow .action.left {
+    left: 0.5em;
+}
+
+.slideshow .action.right {
+    right: 0.5em;
+}
+
+/* Image Compare */
+.image-compare {
+    position: relative;
+    overflow: hidden;
+    margin: 1em auto;
+    border-radius: 0.25em;
+}
+
+.image-compare img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-compare .image-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip-path: inset(0 calc(100% - var(--value)) 0 0);
+}
+
+.image-compare .image-right {
+    width: 100%;
+}
+
+.image-compare .control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: ew-resize;
+    z-index: 2;
+}
+
+.image-compare .control::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 4px;
+    height: 100vh;
+    background: white;
+    cursor: ew-resize;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.image-compare .control::-moz-range-thumb {
+    width: 4px;
+    height: 100vh;
+    background: white;
+    cursor: ew-resize;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.image-compare .control-arrow {
+    position: absolute;
+    top: 50%;
+    left: var(--value);
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 3;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+    color: white;
+}

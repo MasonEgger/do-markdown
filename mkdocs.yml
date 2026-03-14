@@ -1,0 +1,66 @@
+site_name: do-markdown
+site_description: Python-Markdown extensions ported from DigitalOcean's do-markdownit
+repo_url: https://github.com/MasonEgger/do-markdown
+repo_name: MasonEgger/do-markdown
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+    - toc.follow
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - toc:
+      permalink: true
+  - do_markdown.highlight
+  - do_markdown.fence:
+      allowed_environments:
+        - local
+        - second
+        - third
+        - fourth
+        - fifth
+  - do_markdown.youtube
+  - do_markdown.codepen
+  - do_markdown.twitter
+  - do_markdown.instagram
+  - do_markdown.slideshow
+  - do_markdown.image_compare
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - Extensions:
+      - Highlight: extensions/highlight.md
+      - Fence: extensions/fence.md
+      - YouTube: extensions/youtube.md
+      - CodePen: extensions/codepen.md
+      - Twitter: extensions/twitter.md
+      - Instagram: extensions/instagram.md
+      - Slideshow: extensions/slideshow.md
+      - Image Compare: extensions/image-compare.md
+  - Demo: demo.md

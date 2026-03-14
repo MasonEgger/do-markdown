@@ -9,13 +9,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-just install          # uv sync
-just test             # pytest with coverage
-just test-verbose     # pytest -v with coverage
-just lint             # ruff check + ruff format --check
-just format           # ruff format
-just typecheck        # mypy --strict
-just check            # runs test + lint + typecheck
+just install              # uv sync
+just test                 # pytest with coverage
+just test-verbose         # pytest -v with coverage
+just lint                 # ruff check + ruff format --check
+just format               # ruff format
+just typecheck            # mypy --strict
+just check                # runs test + lint + typecheck
+just docs-build           # mkdocs build --strict
+just docs-serve           # mkdocs serve (localhost:8000)
+just docs-serve-tailnet   # mkdocs serve on Tailscale IP
 ```
 
 Run a single test file: `uv run pytest tests/test_highlight.py -v`
@@ -25,7 +28,7 @@ Run a single test: `uv run pytest tests/test_highlight.py::TestInlineHighlight::
 
 ## Project Overview
 
-Python-Markdown extensions ported from DigitalOcean's `do-markdownit` (JavaScript/markdown-it). Used with MkDocs Material via `pymdownx.superfences` and `pymdownx.highlight`. The JS reference repo is `do-markdownit` (sibling directory).
+Python-Markdown extensions ported from DigitalOcean's [`do-markdownit`](https://github.com/digitalocean/do-markdownit) (JavaScript/markdown-it, Apache 2.0). Works with any Python-Markdown consumer — MkDocs, Flask, CLI tools, etc. The bundled MkDocs Material site in `docs/` serves as both documentation and a live demo. CI via GitHub Actions runs tests and deploys docs to GitHub Pages on push to main.
 
 ## Architecture
 
