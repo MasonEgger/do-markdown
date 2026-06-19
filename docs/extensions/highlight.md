@@ -1,6 +1,6 @@
 # Highlight
 
-Converts `<^>text<^>` to `<mark>text</mark>`. Works in regular text, inline code, and fenced code blocks — anywhere that `pymdownx.mark` (`==text==`) cannot reach.
+Converts `\<^>text\<^>` to `<mark>text</mark>`. Works in regular text, inline code, and fenced code blocks — anywhere that `pymdownx.mark` (`==text==`) cannot reach.
 
 ## Configuration
 

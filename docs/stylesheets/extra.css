@@ -28,25 +28,48 @@
     display: block;
 }
 
-/* Environment colors — thick left border */
-.environment-local {
-    border-left: 4px solid #4caf50 !important;
+/* Environment colors — tint the entire code block.
+   The directive adds an `environment-NAME` class to <pre>; Material paints the
+   code background on the inner <code>, so the fill is applied there. */
+pre.environment-local > code {
+    background-color: #e9f5ea !important;
 }
 
-.environment-second {
-    border-left: 4px solid #2196f3 !important;
+pre.environment-second > code {
+    background-color: #e6f0fb !important;
 }
 
-.environment-third {
-    border-left: 4px solid #ff9800 !important;
+pre.environment-third > code {
+    background-color: #fdf1e3 !important;
 }
 
-.environment-fourth {
-    border-left: 4px solid #9c27b0 !important;
+pre.environment-fourth > code {
+    background-color: #f4eafa !important;
 }
 
-.environment-fifth {
-    border-left: 4px solid #f44336 !important;
+pre.environment-fifth > code {
+    background-color: #fdeaea !important;
+}
+
+/* Dark scheme: keep the same hues but dark enough for light code text. */
+[data-md-color-scheme="slate"] pre.environment-local > code {
+    background-color: #18271c !important;
+}
+
+[data-md-color-scheme="slate"] pre.environment-second > code {
+    background-color: #15233a !important;
+}
+
+[data-md-color-scheme="slate"] pre.environment-third > code {
+    background-color: #2c2415 !important;
+}
+
+[data-md-color-scheme="slate"] pre.environment-fourth > code {
+    background-color: #251a30 !important;
+}
+
+[data-md-color-scheme="slate"] pre.environment-fifth > code {
+    background-color: #301818 !important;
 }
 
 /* Prefixed code blocks */
