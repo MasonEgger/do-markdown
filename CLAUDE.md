@@ -28,7 +28,7 @@ Run a single test: `uv run pytest tests/test_highlight.py::TestInlineHighlight::
 
 ## Project Overview
 
-Python-Markdown extensions ported from DigitalOcean's [`do-markdownit`](https://github.com/digitalocean/do-markdownit) (JavaScript/markdown-it, Apache 2.0). Works with any Python-Markdown consumer — MkDocs, Flask, CLI tools, etc. The bundled MkDocs Material site in `docs/` serves as both documentation and a live demo. CI via GitHub Actions runs tests and deploys docs to GitHub Pages on push to main.
+Python-Markdown extensions ported from DigitalOcean's [`do-markdownit`](https://github.com/digitalocean/do-markdownit) (JavaScript/markdown-it, Apache 2.0). Works with any Python-Markdown consumer — MkDocs, Flask, CLI tools, etc. The bundled MkDocs Material site in `docs/` serves as both documentation and a live demo. CI via GitHub Actions runs tests and deploys docs to GitHub Pages on push to main. The `gh-pages` branch is the Pages deploy target, force-pushed by `mkdocs gh-deploy` in the CI `deploy` job — it is auto-managed build output, not a source branch, so never commit to it, merge it, or delete it.
 
 ## Architecture
 
