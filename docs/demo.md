@@ -1,6 +1,6 @@
 # Demo
 
-A showcase of all do-markdown extensions on a single page.
+A demonstration of all do-markdown extensions on a single page.
 
 ## Highlight
 
@@ -16,7 +16,7 @@ def process(data):
     return result
 ```
 
-## Fence — Labels
+## Fence: Labels
 
 ```python
 [label app.py]
@@ -25,14 +25,14 @@ from flask import Flask
 app = Flask(__name__)
 ```
 
-## Fence — Secondary Labels
+## Fence: Secondary Labels
 
 ```
 [secondary_label Output]
 Server started on port 8080
 ```
 
-## Fence — Environments
+## Fence: Environments
 
 ```
 [environment local]
@@ -52,7 +52,7 @@ ssh deploy@staging.example.com
 ssh deploy@prod.example.com
 ```
 
-## Fence — Line Numbers
+## Fence: Line Numbers
 
 ```line_numbers,python
 from flask import Flask
@@ -64,7 +64,7 @@ def index():
     return "Hello, World!"
 ```
 
-## Fence — Command Prefix
+## Fence: Command Prefix
 
 ```command
 sudo apt update
@@ -72,14 +72,14 @@ sudo apt install nginx
 systemctl start nginx
 ```
 
-## Fence — Super User Prefix
+## Fence: Super User Prefix
 
 ```super_user
 systemctl restart nginx
 journalctl -u nginx -f
 ```
 
-## Fence — Custom Prefix
+## Fence: Custom Prefix
 
 ```custom_prefix(mysql>)
 SELECT * FROM users;
@@ -87,7 +87,7 @@ SHOW DATABASES;
 USE production;
 ```
 
-## Fence — Full Combination
+## Fence: Full Combination
 
 ```command
 [environment local]

@@ -47,4 +47,4 @@ No configuration options.
 - The embed must be on its own line
 - Exactly 2 image URLs are required (no more, no fewer)
 - The slider starts at 50% and uses a CSS custom property (`--value`) for positioning
-- No script injection required — uses an inline `oninput` handler
+- No script injection required; uses an inline `oninput` handler
