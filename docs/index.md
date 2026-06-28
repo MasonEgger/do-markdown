@@ -64,10 +64,20 @@ print(html)
 
 You can also load only the extensions you need by listing just those in the `extensions` list.
 
-Using MkDocs? See [Using with MkDocs](using-with-mkdocs.md) for the `mkdocs.yml` configuration.
+Using MkDocs? See [Using with MkDocs](integrations/mkdocs.md) for the `mkdocs.yml` configuration.
 
 !!! note
     The fence extension should be used alongside `pymdownx.superfences` and `pymdownx.highlight` for proper code block rendering. Without them, the fence preprocessor will still extract directives, but the code block HTML structure may differ from what the postprocessor expects.
+
+## Using It Outside Python
+
+If your toolchain is not built on Python-Markdown, the `mw` command-line tool runs the same extensions as pre and post filters around any renderer:
+
+```bash
+mw pre < in.md | your-renderer | mw post > out.html
+```
+
+See the [CLI Reference](cli.md) for the commands and flags, and the [Hugo integration guide](integrations/hugo.md) for a worked setup.
 
 ## Architecture
 

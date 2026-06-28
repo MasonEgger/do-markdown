@@ -64,49 +64,7 @@ If your source has no embed or fence directives and you only want highlight styl
 cmark --unsafe < in.md | mw post --use highlight > out.html
 ```
 
-## Hugo Example
+## Hugo
 
-Hugo renders Markdown with Goldmark.
-markwright sits outside Hugo: run the pre stage over your content before Hugo builds, and the post stage over Hugo's output.
-
-Enable raw-HTML passthrough in Hugo so the expanded embeds and the `mw-fence` comment survive Goldmark.
-In `hugo.toml`:
-
-```toml
-[markup.goldmark.renderer]
-  unsafe = true
-```
-
-Pre-process a content file, build, then post-process the rendered page:
-
-```bash
-mw pre < content/posts/deploy.md > /tmp/deploy.md
-mv /tmp/deploy.md content/posts/deploy.md
-hugo
-mw post < public/posts/deploy/index.html > /tmp/index.html
-mv /tmp/index.html public/posts/deploy/index.html
-```
-
-A real site wraps this in a script that walks `content/` before the build and `public/` after it.
-The tool special-cases nothing about Hugo: it is a pair of stdin-to-stdout filters, and Hugo is one renderer in the middle.
-
-A source file that drives the full pipeline looks like any other Markdown, with markwright syntax mixed in:
-
-````markdown
-# Deploying the App
-
-Watch the walkthrough first:
-
-[youtube dQw4w9WgXcQ]
-
-Then run the deploy script. Note the <^>--force<^> flag:
-
-```command
-[label deploy.sh]
-ssh root@server
-./deploy --force
-```
-````
-
-After `mw pre`, the `[youtube ...]` line is an iframe, the fence carries an `mw-fence` comment, and the prose `<^>--force<^>` is wrapped in `<mark>`.
-After Hugo renders and `mw post` runs, the fence shows its label and command prefix, and the in-code text is styled.
+Hugo is a worked, tested instance of this model, with Goldmark as the renderer.
+See the [Hugo integration guide](integrations/hugo.md) for the exact `hugo.toml` settings and a build script that brackets a real site.

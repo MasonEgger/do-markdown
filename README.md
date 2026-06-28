@@ -4,6 +4,7 @@ A Python port of DigitalOcean's [`do-markdownit`](https://github.com/digitalocea
 
 These are [Python-Markdown](https://python-markdown.github.io/) extensions that bring DigitalOcean's markdown syntax (highlighted text, labeled code fences, and a set of media embeds) to any tool built on Python-Markdown, including [MkDocs](https://www.mkdocs.org/), Flask, or a plain script.
 The port maintains compatibility with the original `do-markdownit` HTML output, so rendered pages match what DigitalOcean produces.
+A bundled command-line tool, `mw`, runs the same extensions as pre and post filters around any renderer, so the syntax also works in toolchains that are not built on Python-Markdown, like Hugo.
 
 Full documentation and a live demo: https://masonegger.github.io/markwright/
 
@@ -101,7 +102,24 @@ html = md.convert("[youtube dQw4w9WgXcQ]")
 The fence extension expects `pymdownx.superfences` and `pymdownx.highlight` to be loaded too.
 Without them the preprocessor still extracts directives, but the code-block HTML may not match what the postprocessor rewrites.
 
-## Syntax at a glance
+## Command-Line Interface (`mw`)
+
+For a toolchain that is not built on Python-Markdown, the `mw` command runs the same extensions as a pair of Unix filters around any renderer: a pre stage on the Markdown source, and a post stage on the rendered HTML.
+
+```bash
+mw pre < in.md | your-renderer | mw post > out.html
+```
+
+- `mw pre` expands the embeds and extracts fence directives into an `mw-fence` comment.
+- `mw post` applies the fence styling, resolves the highlights, and injects each embed script once.
+- `mw render` runs the full pipeline in one shot for callers without their own renderer.
+- `mw list` prints every extension and the stages it provides.
+
+Your renderer must pass raw HTML and HTML comments through.
+Hugo is a worked, tested example: see the [Hugo guide](https://masonegger.github.io/markwright/integrations/hugo/).
+The full command and flag reference is in the [CLI docs](https://masonegger.github.io/markwright/cli/).
+
+## Syntax at a Glance
 
 ````text
 Highlight:       <^>important<^>
@@ -130,12 +148,13 @@ See the [extension docs](https://masonegger.github.io/markwright/) for every fla
 This project uses [`uv`](https://docs.astral.sh/uv/) and [`just`](https://github.com/casey/just).
 
 ```bash
-just install      # uv sync
-just test         # pytest with coverage
-just lint         # ruff check + ruff format --check
-just typecheck    # mypy --strict
-just check        # test + lint + typecheck
-just docs-serve   # serve the docs site at localhost:8000
+just install           # uv sync
+just test              # unit tests, 100% line + branch coverage
+just test-integration  # end-to-end Hugo pipeline test (needs hugo)
+just lint              # ruff check + ruff format --check
+just typecheck         # mypy --strict
+just check             # test + lint + typecheck
+just docs-serve        # serve the docs site at localhost:8000
 ```
 
 `just check` must pass before a change is complete.

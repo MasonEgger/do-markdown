@@ -11,7 +11,7 @@ md = markdown.Markdown(extensions=["markwright.codepen"])
 html = md.convert("[codepen MattCowley vwPzeX]")
 ```
 
-See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
+See [Using with MkDocs](../integrations/mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 
