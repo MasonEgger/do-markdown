@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import markdown
 
+from markwright.instagram import apply_html, expand_source
+
 
 def render(source: str) -> str:
     """Render Markdown source with the Instagram extension loaded."""
@@ -121,3 +123,34 @@ class TestInstagramEdgeCases:
     def test_not_wrapped_in_paragraph(self) -> None:
         result = render("[instagram https://www.instagram.com/p/ABC]")
         assert "<p><div" not in result
+
+
+class TestInstagramStageFunctions:
+    """Tests for the pure expand_source and apply_html stage functions."""
+
+    def test_expand_source_emits_signature(self) -> None:
+        result = expand_source("[instagram https://www.instagram.com/p/CkQuv3_LRgS]")
+        assert 'class="instagram-media"' in result
+        assert "https://www.instagram.com/p/CkQuv3_LRgS" in result
+
+    def test_expand_source_no_stash_placeholder(self) -> None:
+        result = expand_source("[instagram https://www.instagram.com/p/CkQuv3_LRgS]")
+        assert "\x02" not in result
+
+    def test_apply_html_injects_one_script(self) -> None:
+        result = apply_html('<blockquote class="instagram-media"></blockquote>')
+        assert result.count("embed.js") == 1
+
+    def test_apply_html_idempotent(self) -> None:
+        once = apply_html('<blockquote class="instagram-media"></blockquote>')
+        twice = apply_html(once)
+        assert twice.count("embed.js") == 1
+
+    def test_apply_html_no_signature_no_script(self) -> None:
+        result = apply_html("<p>nothing here</p>")
+        assert "embed.js" not in result
+
+    def test_apply_html_warnings_stay_empty(self) -> None:
+        warnings: list[str] = []
+        apply_html('<blockquote class="instagram-media"></blockquote>', warnings)
+        assert warnings == []

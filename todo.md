@@ -9,10 +9,10 @@ Mirrors `plan.md`. `/bpe:execute-plan` checks off sub-steps as it goes.
 - [x] 4. Existing in-process tests pass; `just check`
 
 ## Step 2: Script Embed Stage Functions
-- [ ] 1. RED: stage-function + idempotency + no-signature tests for codepen, twitter, instagram
-- [ ] 2. GREEN: `_render_match`, `expand_source`, `apply_html` (signature inject, idempotent); Postprocessor delegates to apply_html; drop the `found` flag
-- [ ] 3. REFACTOR: single signature + script constant per module
-- [ ] 4. Existing script-injection tests pass; `just check`
+- [x] 1. RED: stage-function + idempotency + no-signature tests for codepen, twitter, instagram
+- [x] 2. GREEN: `_render_match`, `expand_source`, `apply_html` (signature inject, idempotent); Postprocessor delegates to apply_html; drop the `found` flag
+- [x] 3. REFACTOR: single signature + script constant per module
+- [x] 4. Existing script-injection tests pass; `just check`
 
 ## Step 3: Fence Stage Functions, `mw-fence` Marker, Version Validation
 - [ ] 1. RED: TestFenceExpandSource + TestFenceApplyHtml (label, prefix, malformed, bad version, no-block, silent-no-op)

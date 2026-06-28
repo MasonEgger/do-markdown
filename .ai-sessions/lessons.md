@@ -2,6 +2,7 @@
 
 ## Recent
 <!-- 10 most recent lessons, newest first -->
+- Script-embed postprocessors can drop the `found` flag and detect their class signature in the rendered HTML instead: the raw-HTML restore postprocessor (priority 30) runs before script injection (priority 15), so the stashed embed HTML is already in the text; `SIGNATURE in html and SCRIPT not in html` makes injection idempotent and shares one path with the `mw post` CLI stage (2026-06-28)
 - Design diagnostics around locally observable state: a post-only filter cannot detect what an upstream stage stripped (a removed HTML comment leaves no trace), so `mw --warn` reports only the malformed or unsupported markers it can actually see (2026-06-27)
 - Commit the spec/plan/todo artifacts before `/bpe:goal`; it refuses on a dirty tree and on a non-gitignored `goal.md`, and a clean tree keeps the run's "git status empty" completion condition valid (2026-06-27)
 - When renaming a project, check whether the old name is a substring of a name you must keep (`do-markdown` is inside the upstream `do-markdownit`); use a negative-lookahead replace `do-markdown(?!it)` so the attribution is not corrupted (2026-06-27)
@@ -11,8 +12,6 @@
 - A 3-backtick fence inside a 3-backtick code block closes it early; use a 4-backtick outer fence to show nested triple-backtick examples (2026-06-27)
 - For "no forbidden characters" audits, use a Python codepoint scan (`for c in line if c in '...'`), never a shell grep with a zsh `$'...'` Unicode pattern; the latter silently matched nothing and falsely passed an em-dash (2026-06-26)
 - When writing prose that bears Mason's name, run the writing-style audit before claiming compliance, not after being asked; the global no-em-dash rule applies to CLAUDE.md and lessons too (2026-06-26)
-- When a coverage gap points at one line, trace it to the exact code path before writing the test — `highlight.py:36` lived in the postprocessor's `_wrap_highlight_segments`, not the inline path that an existing empty-marker test already covered (2026-06-26)
-- Adding a parallel code path for an existing behavior needs its own test even when an analogous test exists for the old path (2026-06-26)
 
 ## Testing
 - When a coverage gap points at one line, trace it to the exact code path before writing the test — a same-looking input may exercise a different path (2026-06-26)
@@ -28,5 +27,6 @@
 - A 3-backtick fence inside a 3-backtick code block closes it early; use a 4-backtick outer fence to show nested triple-backtick examples (2026-06-27)
 
 ## Python-Markdown
+- Script-embed postprocessors can detect their class signature in the rendered HTML instead of carrying a preprocessor `found` flag: raw-HTML restore (priority 30) runs before script injection (priority 15), so the stashed embed HTML is already present; `SIGNATURE in html and SCRIPT not in html` makes the inject idempotent and shares one code path with the CLI post stage (2026-06-28)
 - Extensions that emit raw HTML from a preprocessor must stash it via `self.md.htmlStash.store(html)`; otherwise Markdown keeps parsing the output (JS backticks become `<code>`, block elements get an invalid `<p>` wrap) (2026-06-27)
 - Diagnose render bugs by converting the failing case through the real extension stack and reading the HTML; that separates markdown-output bugs from theme CSS (2026-06-27)
