@@ -33,6 +33,9 @@ build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: end-to-end tests that require external tools such as Hugo",
+]
 
 [tool.ruff]
 target-version = "py314"

@@ -23,14 +23,36 @@ jobs:
           python-version-file: ".python-version"
 
       - run: uv sync
-      - run: uv run pytest --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
+      - run: uv run pytest -m "not integration" --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
       - run: uv run ruff check src/ tests/
       - run: uv run ruff format --check src/ tests/
       - run: uv run mypy --strict src/
 
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: latest
+          extended: true
+
+      - run: uv sync
+      - run: uv run pytest tests/integration -m integration -v
+
   deploy:
     runs-on: ubuntu-latest
-    needs: check
+    needs: [check, integration]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4

@@ -9,13 +9,17 @@ default:
 install:
     uv sync
 
-# Run the test suite with branch coverage, failing under 100%
+# Run the unit suite with branch coverage, failing under 100% (excludes integration)
 test:
-    uv run pytest --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
+    uv run pytest -m "not integration" --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
 
-# Run the test suite verbosely with branch coverage, failing under 100%
+# Run the unit suite verbosely with branch coverage, failing under 100%
 test-verbose:
-    uv run pytest -v --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
+    uv run pytest -v -m "not integration" --cov=markwright --cov-branch --cov-fail-under=100 --cov-report=term-missing
+
+# Run the end-to-end integration tests (requires hugo on PATH)
+test-integration:
+    uv run pytest tests/integration -m integration -v
 
 # Check lint and formatting
 lint:
