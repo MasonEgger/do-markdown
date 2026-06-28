@@ -405,10 +405,10 @@ class FenceExtension(Extension):
         :param md: The Markdown instance to extend.
         """
         preprocessor = FencePreprocessor(md, self)
-        md.preprocessors.register(preprocessor, "do-fence-pre", 40)
+        md.preprocessors.register(preprocessor, "mw-fence-pre", 40)
 
         postprocessor = FencePostprocessor(md, self)
-        md.postprocessors.register(postprocessor, "do-fence-post", 25)
+        md.postprocessors.register(postprocessor, "mw-fence-post", 25)
 
 
 def makeExtension(**kwargs: object) -> FenceExtension:
