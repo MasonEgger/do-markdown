@@ -6,7 +6,7 @@ This plan turns `spec.md` into TDD-sized steps. The strategy from the spec: refa
 
 - [x] Step 1: Simple embed stage functions (youtube, slideshow, image_compare)
 - [x] Step 2: Script embed stage functions (codepen, twitter, instagram)
-- [ ] Step 3: Fence stage functions, `mw-fence` marker, version validation
+- [x] Step 3: Fence stage functions, `mw-fence` marker, version validation
 - [ ] Step 4: Highlight stage functions
 - [ ] Step 5: Stage registry and selection
 - [ ] Step 6: CLI skeleton, `list`, `--version`, entry point

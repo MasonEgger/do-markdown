@@ -3,6 +3,8 @@
 
 import markdown
 
+from markwright.fence import apply_html, expand_source
+
 
 def render_fence(source: str, allowed_environments: list[str] | None = None) -> str:
     """Render source with superfences, highlight, and fence extensions loaded."""
@@ -267,3 +269,78 @@ class TestPrefixFullCombo:
         assert '<div class="code-label" title="index.html">index.html</div>' in result
         assert "prefixed" in result
         assert "line_numbers" in result
+
+
+class TestFenceExpandSource:
+    def test_label_emits_mw_fence_marker(self) -> None:
+        source = "```\n[label deploy.sh]\necho hi\n```"
+        result = expand_source(source)
+        assert "<!-- mw-fence:" in result
+        assert '"version": 1' in result
+        assert '"label": "deploy.sh"' in result
+
+    def test_label_directive_removed_fence_and_code_remain(self) -> None:
+        source = "```\n[label deploy.sh]\necho hi\n```"
+        result = expand_source(source)
+        assert "[label deploy.sh]" not in result
+        assert "echo hi" in result
+        assert "```" in result
+
+    def test_command_fence_emits_prefix_metadata(self) -> None:
+        source = "```command\necho hi\n```"
+        result = expand_source(source)
+        assert '"prefix_type": "command"' in result
+        assert '"prefix_value": "$"' in result
+
+    def test_plain_fence_no_marker_unchanged(self) -> None:
+        source = "```\nplain code\n```"
+        result = expand_source(source)
+        assert "mw-fence" not in result
+        assert result == source
+
+
+class TestFenceApplyHtml:
+    def test_label_marker_injects_div_and_removes_comment(self) -> None:
+        html_input = '<!-- mw-fence:{"version": 1, "label": "deploy.sh"} -->\n<pre><code>echo hi\n</code></pre>'
+        result = apply_html(html_input)
+        assert '<div class="code-label" title="deploy.sh">deploy.sh</div>' in result
+        assert "<!-- mw-fence:" not in result
+
+    def test_command_marker_wraps_lines_with_prefix(self) -> None:
+        html_input = (
+            '<!-- mw-fence:{"version": 1, "prefix_type": "command", "prefix_value": "$"} -->\n'
+            "<pre><code>sudo apt update\n</code></pre>"
+        )
+        result = apply_html(html_input)
+        assert "<ol>" in result
+        assert 'data-prefix="$"' in result
+
+    def test_malformed_json_warns_and_skips(self) -> None:
+        html_input = "<!-- mw-fence:{not json -->\n<pre><code>x\n</code></pre>"
+        warnings: list[str] = []
+        result = apply_html(html_input, warnings)
+        assert len(warnings) == 1
+        assert "code-label" not in result
+        assert "<!-- mw-fence:" not in result
+
+    def test_unsupported_version_warns_and_skips(self) -> None:
+        html_input = '<!-- mw-fence:{"version": 999, "label": "x"} -->\n<pre><code>x\n</code></pre>'
+        warnings: list[str] = []
+        result = apply_html(html_input, warnings)
+        assert len(warnings) == 1
+        assert "code-label" not in result
+
+    def test_no_following_code_block_warns(self) -> None:
+        html_input = '<!-- mw-fence:{"version": 1, "label": "x"} -->\n<p>no code here</p>'
+        warnings: list[str] = []
+        result = apply_html(html_input, warnings)
+        assert len(warnings) == 1
+        assert "code-label" not in result
+
+    def test_warnings_none_is_silent_no_op(self) -> None:
+        malformed = "<!-- mw-fence:{not json -->\n<pre><code>x\n</code></pre>"
+        bad_version = '<!-- mw-fence:{"version": 999, "label": "x"} -->\n<pre><code>x\n</code></pre>'
+        no_block = '<!-- mw-fence:{"version": 1, "label": "x"} -->\n<p>no code here</p>'
+        for html_input in (malformed, bad_version, no_block):
+            result = apply_html(html_input)
+            assert "code-label" not in result

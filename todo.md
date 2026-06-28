@@ -15,11 +15,11 @@ Mirrors `plan.md`. `/bpe:execute-plan` checks off sub-steps as it goes.
 - [x] 4. Existing script-injection tests pass; `just check`
 
 ## Step 3: Fence Stage Functions, `mw-fence` Marker, Version Validation
-- [ ] 1. RED: TestFenceExpandSource + TestFenceApplyHtml (label, prefix, malformed, bad version, no-block, silent-no-op)
-- [ ] 2. Document the marker contract in the module header
-- [ ] 3. GREEN: rename to `mw-fence` + add `version: 1`; `expand_source`; `apply_html` with validation + warnings; adapters delegate
-- [ ] 4. REFACTOR: MARKER_NAME / MARKER_VERSION constants shared
-- [ ] 5. Existing fence tests pass; `just check`
+- [x] 1. RED: TestFenceExpandSource + TestFenceApplyHtml (label, prefix, malformed, bad version, no-block, silent-no-op)
+- [x] 2. Document the marker contract in the module header
+- [x] 3. GREEN: rename to `mw-fence` + add `version: 1`; `expand_source`; `apply_html` with validation + warnings; adapters delegate
+- [x] 4. REFACTOR: MARKER_NAME / MARKER_VERSION constants shared
+- [x] 5. Existing fence tests pass; `just check`
 
 ## Step 4: Highlight Stage Functions
 - [ ] 1. RED: TestHighlightApplyHtml + TestHighlightExpandSource (prose wrap, in-code untouched, inline-code untouched, backslash literal)
