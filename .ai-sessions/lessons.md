@@ -2,6 +2,7 @@
 
 ## Recent
 <!-- 10 most recent lessons, newest first -->
+- mypy strict rejects indexing a `TypedDict` with a runtime/variable key (`spec[stage_key]` raises `literal-required`); to iterate over fields generically, pass literal-key accessor callables (`lambda spec: spec["pre"]`) instead of string key names (2026-06-28)
 - Keep a registry-facing stage function at a fixed signature (`apply_html(html, warnings=None)`) and route the in-process processor through the same private core (`_apply_marker(..., label_class, secondary_label_class)`) so configurable in-process options survive without giving the pure function config parameters (2026-06-28)
 - Script-embed postprocessors can drop the `found` flag and detect their class signature in the rendered HTML instead: the raw-HTML restore postprocessor (priority 30) runs before script injection (priority 15), so the stashed embed HTML is already in the text; `SIGNATURE in html and SCRIPT not in html` makes injection idempotent and shares one path with the `mw post` CLI stage (2026-06-28)
 - Design diagnostics around locally observable state: a post-only filter cannot detect what an upstream stage stripped (a removed HTML comment leaves no trace), so `mw --warn` reports only the malformed or unsupported markers it can actually see (2026-06-27)
@@ -11,7 +12,6 @@
 - Diagnose render bugs by converting the case through the real extension stack and reading the HTML; it splits markdown-output bugs from MkDocs/Material CSS with evidence (2026-06-27)
 - A test can pass while the bug is live if it only asserts substrings that survive the corruption; write the RED assertion against the actual broken output (no `<code>`, no `<p><tag>`) (2026-06-27)
 - A 3-backtick fence inside a 3-backtick code block closes it early; use a 4-backtick outer fence to show nested triple-backtick examples (2026-06-27)
-- For "no forbidden characters" audits, use a Python codepoint scan (`for c in line if c in '...'`), never a shell grep with a zsh `$'...'` Unicode pattern; the latter silently matched nothing and falsely passed an em-dash (2026-06-26)
 
 ## Testing
 - When a coverage gap points at one line, trace it to the exact code path before writing the test — a same-looking input may exercise a different path (2026-06-26)

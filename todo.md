@@ -28,10 +28,10 @@ Mirrors `plan.md`. `/bpe:execute-plan` checks off sub-steps as it goes.
 - [x] 4. Existing highlight tests pass; `just check`
 
 ## Step 5: Stage Registry and Selection
-- [ ] 1. RED: tests/test_registry.py (select default/use/exclude/unknown, run_pre, run_post, warnings threading, describe)
-- [ ] 2. GREEN: registry.py with REGISTRY, select_extensions, run_pre, run_post, describe; priorities per plan
-- [ ] 3. REFACTOR: declarative, no per-extension branching in run_pre/run_post
-- [ ] 4. `just check`
+- [x] 1. RED: tests/test_registry.py (select default/use/exclude/unknown, run_pre, run_post, warnings threading, describe)
+- [x] 2. GREEN: registry.py with REGISTRY, select_extensions, run_pre, run_post, describe; priorities per plan
+- [x] 3. REFACTOR: declarative, no per-extension branching in run_pre/run_post
+- [x] 4. `just check`
 
 ## Step 6: CLI Skeleton, `list`, `--version`, Entry Point
 - [ ] 1. RED: tests/test_cli.py (--version, list, usage error)
