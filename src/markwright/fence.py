@@ -83,6 +83,52 @@ def _parse_prefix_from_info(info_string: str) -> tuple[str, dict[str, str]]:
     return cleaned_info, prefix_metadata
 
 
+_LINE_SPAN_OPEN = '<span class="line"'
+_SPAN_TAG_RE = re.compile(r"<(/?)span\b[^>]*>")
+
+
+def _split_line_spans(code_content: str) -> list[str]:
+    """Split Chroma-wrapped code into one string per ``<span class="line">`` block.
+
+    :param code_content: Rendered code containing ``<span class="line">`` line wrappers.
+    :returns: One balanced ``<span class="line">...</span>`` string per line.
+    """
+    lines: list[str] = []
+    cursor = 0
+    while True:
+        start = code_content.find(_LINE_SPAN_OPEN, cursor)
+        if start == -1:
+            break
+        depth = 0
+        end = len(code_content)
+        for tag_match in _SPAN_TAG_RE.finditer(code_content, start):
+            depth += -1 if tag_match.group(1) else 1
+            if depth == 0:
+                end = tag_match.end()
+                break
+        lines.append(code_content[start:end])
+        cursor = end
+    return lines
+
+
+def _split_rendered_lines(code_content: str) -> list[str]:
+    """Split rendered code content into visual lines for prefix wrapping.
+
+    Pygments-style highlighters emit flat, newline-delimited lines, so a split on
+    newlines is correct. Chroma (Hugo) wraps each line in ``<span class="line">...
+    </span>`` with the newline inside the span; splitting that on newlines would cut
+    a line span in half and emit a spurious empty prefixed line, so its line spans
+    are split on their own boundaries instead.
+
+    :param code_content: The raw content between <code> and </code> tags.
+    :returns: One string per visual line.
+    """
+    if _LINE_SPAN_OPEN in code_content:
+        return _split_line_spans(code_content)
+    flat = code_content[:-1] if code_content.endswith("\n") else code_content
+    return flat.split("\n")
+
+
 def _wrap_lines_with_prefix(code_content: str, prefix_metadata: dict[str, str]) -> str:
     """Wrap each code line in <li> elements with data-prefix attributes inside an <ol>.
 
@@ -93,12 +139,7 @@ def _wrap_lines_with_prefix(code_content: str, prefix_metadata: dict[str, str]) 
     prefix_type = prefix_metadata["prefix_type"]
     prefix_value = prefix_metadata.get("prefix_value", "")
 
-    # Split content into lines. The content typically ends with \n before </code>,
-    # so we strip the trailing newline before splitting, then re-add structure.
-    if code_content.endswith("\n"):
-        code_content = code_content[:-1]
-
-    code_lines = code_content.split("\n")
+    code_lines = _split_rendered_lines(code_content)
     wrapped_lines: list[str] = []
 
     for line_index, line_text in enumerate(code_lines):

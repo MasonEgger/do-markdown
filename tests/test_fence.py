@@ -395,3 +395,44 @@ class TestFenceBranchCoverage:
         result = apply_html(html_input)
         assert "<!-- mw-fence:" not in result
         assert "secondary-code-label" not in result
+
+
+class TestFenceChromaPrefix:
+    """Prefix wrapping must handle Chroma (Hugo) output, which wraps each line in
+    <span class="line"><span class="cl">...newline...</span></span>. Splitting that
+    on newlines cuts the line span in half and emits a spurious empty prefixed line."""
+
+    def test_single_line_command_one_prefix(self) -> None:
+        # One Chroma line must produce exactly one <li>, not two.
+        html_input = (
+            '<!-- mw-fence:{"version": 1, "prefix_type": "command", "prefix_value": "$"} -->\n'
+            '<pre class="chroma"><code class="language-bash">'
+            '<span class="line"><span class="cl">./deploy.sh --prod\n</span></span></code></pre>'
+        )
+        result = apply_html(html_input)
+        assert result.count('<li data-prefix="$">') == 1
+        # The line span stays intact inside the single <li> (no cross-<li> split).
+        assert '<li data-prefix="$"><span class="line"><span class="cl">./deploy.sh --prod' in result
+        assert "</li><li" not in result
+
+    def test_multi_line_chroma_one_prefix_per_line(self) -> None:
+        html_input = (
+            '<!-- mw-fence:{"version": 1, "prefix_type": "line_numbers"} -->\n'
+            '<pre class="chroma"><code class="language-js">'
+            '<span class="line"><span class="cl">const value = x;\n</span></span>'
+            '<span class="line"><span class="cl">console.log(value);\n</span></span></code></pre>'
+        )
+        result = apply_html(html_input)
+        assert result.count("<li data-prefix=") == 2
+        assert 'data-prefix="1"' in result
+        assert 'data-prefix="2"' in result
+        assert 'data-prefix="3"' not in result
+
+    def test_chroma_unclosed_line_span_does_not_raise(self) -> None:
+        # Defensive: a line span with no matching close still yields one line.
+        html_input = (
+            '<!-- mw-fence:{"version": 1, "prefix_type": "command", "prefix_value": "$"} -->\n'
+            '<pre class="chroma"><code><span class="line"><span class="cl">x</code></pre>'
+        )
+        result = apply_html(html_input)
+        assert result.count('<li data-prefix="$">') == 1
