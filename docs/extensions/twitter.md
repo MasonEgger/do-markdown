@@ -2,14 +2,16 @@
 
 Embeds tweets with configurable theme, alignment, and width. Accepts both `twitter.com` and `x.com` URLs, canonicalizing to `twitter.com`.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.twitter
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.twitter"])
+html = md.convert("[twitter https://twitter.com/User/status/123]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

@@ -117,3 +117,7 @@ class TestInstagramEdgeCases:
         md = markdown.Markdown(extensions=["pymdownx.superfences", "do_markdown.instagram"])
         result = md.convert("```\n[instagram https://www.instagram.com/p/ABC]\n```")
         assert "instagram-media" not in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        result = render("[instagram https://www.instagram.com/p/ABC]")
+        assert "<p><div" not in result

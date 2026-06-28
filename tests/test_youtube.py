@@ -78,3 +78,7 @@ class TestYouTubeEdgeCases:
         result = render_youtube("[youtube a&b<c]")
         assert "a%26b%3Cc" in result
         assert "a&b<c" not in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        result = render_youtube("[youtube dQw4w9WgXcQ]")
+        assert "<p><iframe" not in result

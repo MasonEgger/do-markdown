@@ -2,14 +2,16 @@
 
 Creates image slideshows with left/right navigation arrows and scroll-snap behavior.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.slideshow
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.slideshow"])
+html = md.convert("[slideshow https://example.com/a.jpg https://example.com/b.jpg]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

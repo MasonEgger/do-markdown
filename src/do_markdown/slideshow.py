@@ -63,7 +63,7 @@ class SlideshowPreprocessor(Preprocessor):
                 urls, height, width = _parse_slideshow_args(slideshow_match.group(1))
                 if urls:
                     slideshow_html = _build_slideshow_html(urls, height, width)
-                    output.append(slideshow_html)
+                    output.append(self.md.htmlStash.store(slideshow_html))
                 else:
                     output.append(line)
             else:

@@ -53,6 +53,19 @@ class TestImageCompareBasic:
         assert "oninput=" in result
         assert "--value" in result
 
+    def test_oninput_backticks_survive_markdown(self) -> None:
+        # The oninput handler uses a JS template literal with backticks. Markdown
+        # must not parse those backticks as an inline code span, which would break
+        # the handler and stop the slider from clipping the image.
+        result = render_compare("[compare https://left.png https://right.png]")
+        assert "<code>" not in result
+        assert "`${this.value}%`" in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        # The block-level widget must not be wrapped in an invalid <p>.
+        result = render_compare("[compare https://left.png https://right.png]")
+        assert "<p><div" not in result
+
 
 class TestImageCompareDimensions:
     """Tests for custom dimensions."""

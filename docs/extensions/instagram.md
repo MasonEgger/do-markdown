@@ -2,14 +2,16 @@
 
 Embeds Instagram posts with optional caption display, alignment, and width.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.instagram
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.instagram"])
+html = md.convert("[instagram https://www.instagram.com/p/CkQuv3_LRgS]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 
