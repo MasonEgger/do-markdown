@@ -64,11 +64,11 @@ Mirrors `plan.md`. `/bpe:execute-plan` checks off sub-steps as it goes.
 - [x] 4. `just check`
 
 ## Step 11: Docs
-- [ ] 1. docs/cli.md (subcommands, flags, exit codes, pipeline example)
-- [ ] 2. docs/pipeline.md (integration guide, Hugo + Unix examples)
-- [ ] 3. docs/renderer-requirements.md (the three requirements, mw-fence v1 schema, degradation)
-- [ ] 4. mkdocs.yml nav: add CLI section
-- [ ] 5. `just docs-build` strict, no warnings
+- [x] 1. docs/cli.md (subcommands, flags, exit codes, pipeline example)
+- [x] 2. docs/pipeline.md (integration guide, Hugo + Unix examples)
+- [x] 3. docs/renderer-requirements.md (the three requirements, mw-fence v1 schema, degradation)
+- [x] 4. mkdocs.yml nav: add CLI section
+- [x] 5. `just docs-build` strict, no warnings
 
 ## Step 12: Packaging Smoke Test
 - [ ] 1. RED: tests/test_packaging.py (`mw --version` and `mw list` via subprocess return 0)
