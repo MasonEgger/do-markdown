@@ -12,6 +12,9 @@ dependencies = [
     "markdown>=3.4",
 ]
 
+[project.scripts]
+mw = "markwright.cli:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",

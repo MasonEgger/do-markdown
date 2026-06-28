@@ -34,11 +34,11 @@ Mirrors `plan.md`. `/bpe:execute-plan` checks off sub-steps as it goes.
 - [x] 4. `just check`
 
 ## Step 6: CLI Skeleton, `list`, `--version`, Entry Point
-- [ ] 1. RED: tests/test_cli.py (--version, list, usage error)
-- [ ] 2. GREEN: cli.py main() with argparse subparsers; implement list + --version
-- [ ] 3. Add `[project.scripts] mw = "markwright.cli:main"` to pyproject.toml
-- [ ] 4. REFACTOR: shared parser-builder helper
-- [ ] 5. `just check`
+- [x] 1. RED: tests/test_cli.py (--version, list, usage error)
+- [x] 2. GREEN: cli.py main() with argparse subparsers; implement list + --version
+- [x] 3. Add `[project.scripts] mw = "markwright.cli:main"` to pyproject.toml
+- [x] 4. REFACTOR: shared parser-builder helper
+- [x] 5. `just check`
 
 ## Step 7: CLI `post` Subcommand
 - [ ] 1. RED: TestCliPost (stdin->stdout inject once, --use, --exclude, --warn stderr, no-warn silent, unknown name exit 2)
