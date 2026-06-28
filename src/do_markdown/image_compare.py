@@ -46,7 +46,11 @@ class ImageComparePreprocessor(Preprocessor):
                 width = int(compare_match.group(4)) if compare_match.group(4) else DEFAULT_WIDTH
 
                 compare_html = _build_compare_html(left_url, right_url, height, width)
-                output.append(compare_html)
+                # Stash the raw HTML so Markdown does not parse its contents. The
+                # oninput handler contains a JS backtick template literal that
+                # would otherwise be turned into an inline <code> span, and the
+                # block-level <div> would be wrapped in an invalid <p>.
+                output.append(self.md.htmlStash.store(compare_html))
             else:
                 output.append(line)
         return output

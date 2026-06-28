@@ -2,22 +2,32 @@
 
 Adds labels, secondary labels, environment classes, and line prefixes to fenced code blocks. All fence features are coordinated through a single extension to avoid ordering issues.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.fence:
-      allowed_environments:
-        - local
-        - second
-        - third
-        - fourth
-        - fifth
+Load `do_markdown.fence` alongside `pymdownx.superfences` and `pymdownx.highlight`; the fence postprocessor rewrites the code-block HTML those produce.
+
+```python
+import markdown
+
+md = markdown.Markdown(
+    extensions=[
+        "pymdownx.superfences",
+        "pymdownx.highlight",
+        "do_markdown.fence",
+    ],
+    extension_configs={
+        "do_markdown.fence": {
+            "allowed_environments": ["local", "second", "third", "fourth", "fifth"],
+        },
+    },
+)
 ```
 
 | Option | Default | Description |
 |--------|---------|-------------|
 | `allowed_environments` | `[]` (allow all) | List of allowed environment names. If empty, all names are accepted. |
+
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Labels
 

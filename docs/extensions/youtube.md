@@ -2,14 +2,16 @@
 
 Embeds YouTube videos as responsive iframes with automatic aspect ratio calculation.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.youtube
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.youtube"])
+html = md.convert("[youtube dQw4w9WgXcQ]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

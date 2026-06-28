@@ -132,3 +132,7 @@ class TestCodePenEdgeCases:
         md = markdown.Markdown(extensions=["pymdownx.superfences", "do_markdown.codepen"])
         result = md.convert("```\n[codepen User Hash]\n```")
         assert "data-user" not in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        result = render("[codepen User Hash]")
+        assert "<p><p" not in result

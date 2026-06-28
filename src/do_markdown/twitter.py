@@ -106,7 +106,7 @@ class TwitterPreprocessor(Preprocessor):
                     f"    </blockquote>\n"
                     f"</div>"
                 )
-                output.append(embed_html)
+                output.append(self.md.htmlStash.store(embed_html))
             else:
                 output.append(line)
 

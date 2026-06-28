@@ -51,7 +51,7 @@ class YouTubePreprocessor(Preprocessor):
                     f' target="_blank">View YouTube video</a>\n'
                     f"</iframe>"
                 )
-                output.append(iframe_html)
+                output.append(self.md.htmlStash.store(iframe_html))
             else:
                 output.append(line)
         return output

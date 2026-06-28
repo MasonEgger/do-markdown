@@ -2,14 +2,16 @@
 
 Creates side-by-side image comparisons with an interactive slider control.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.image_compare
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.image_compare"])
+html = md.convert("[compare https://example.com/before.jpg https://example.com/after.jpg]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

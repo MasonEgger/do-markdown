@@ -120,3 +120,7 @@ class TestTwitterEdgeCases:
         md = markdown.Markdown(extensions=["pymdownx.superfences", "do_markdown.twitter"])
         result = md.convert("```\n[twitter https://twitter.com/U/status/1]\n```")
         assert "twitter-tweet" not in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        result = render("[twitter https://twitter.com/U/status/1]")
+        assert "<p><div" not in result

@@ -6,14 +6,14 @@ The original `do-markdownit` is licensed under the [Apache License 2.0](https://
 
 ## Features
 
-- **Highlight** wraps `<^>text<^>` in `<mark>`, and works inside inline code and fenced code blocks where `==text==` cannot reach.
-- **Fence** adds labels, secondary labels, environment classes, and command-line prefixes to code blocks.
-- **YouTube** turns `[youtube ID]` into a responsive iframe embed.
-- **CodePen** embeds a pen with theme, default-tab, and layout options.
-- **Twitter** embeds a tweet with theme and alignment options.
-- **Instagram** embeds a post with caption and alignment options.
-- **Slideshow** builds an image slideshow with navigation arrows.
-- **Image Compare** renders two images with a draggable before/after slider.
+- **[Highlight](extensions/highlight.md)** wraps `<^>text<^>` in `<mark>`, and works inside inline code and fenced code blocks where `==text==` cannot reach.
+- **[Fence](extensions/fence.md)** adds labels, secondary labels, environment classes, and command-line prefixes to code blocks.
+- **[YouTube](extensions/youtube.md)** turns `[youtube ID]` into a responsive iframe embed.
+- **[CodePen](extensions/codepen.md)** embeds a pen with theme, default-tab, and layout options.
+- **[Twitter](extensions/twitter.md)** embeds a tweet with theme and alignment options.
+- **[Instagram](extensions/instagram.md)** embeds a post with caption and alignment options.
+- **[Slideshow](extensions/slideshow.md)** builds an image slideshow with navigation arrows.
+- **[Image Compare](extensions/image-compare.md)** renders two images with a draggable before/after slider.
 
 ## Installation
 
@@ -32,38 +32,9 @@ uv add --editable ../do-markdown
 
 ## Usage
 
-### With MkDocs
+These extensions work with Python-Markdown directly, so you can use them in any Python program (a Flask app, a CLI tool, a static site generator, or a simple script).
 
-Add the extensions to your `mkdocs.yml`:
-
-```yaml
-markdown_extensions:
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      pygments_lang_class: true
-  - do_markdown.highlight
-  - do_markdown.fence:
-      allowed_environments:
-        - local
-        - second
-        - third
-        - fourth
-        - fifth
-  - do_markdown.youtube
-  - do_markdown.codepen
-  - do_markdown.twitter
-  - do_markdown.instagram
-  - do_markdown.slideshow
-  - do_markdown.image_compare
-```
-
-Then use the custom syntax in your Markdown files. See each extension's documentation for syntax details and examples.
-
-### Standalone (Without MkDocs)
-
-These extensions work with Python-Markdown directly. You can use them in any Python application (a Flask app, a CLI tool, a static site generator, or a simple script):
-
-```python
+````python
 import markdown
 
 md = markdown.Markdown(extensions=[
@@ -89,21 +60,11 @@ apt update
 
 html = md.convert(source)
 print(html)
-```
+````
 
-You can also load individual extensions if you only need specific features:
+You can also load only the extensions you need by listing just those in the `extensions` list.
 
-```python
-import markdown
-
-# Just the highlight extension
-md = markdown.Markdown(extensions=["do_markdown.highlight"])
-html = md.convert("This has a <^>highlighted word<^> in it.")
-
-# Just YouTube embeds
-md = markdown.Markdown(extensions=["do_markdown.youtube"])
-html = md.convert("[youtube dQw4w9WgXcQ]")
-```
+Using MkDocs? See [Using with MkDocs](using-with-mkdocs.md) for the `mkdocs.yml` configuration.
 
 !!! note
     The fence extension should be used alongside `pymdownx.superfences` and `pymdownx.highlight` for proper code block rendering. Without them, the fence preprocessor will still extract directives, but the code block HTML structure may differ from what the postprocessor expects.

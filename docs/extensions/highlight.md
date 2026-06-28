@@ -3,14 +3,16 @@
 Converts `\<^>text\<^>` to `<mark>text</mark>`.
 Works in regular text, inline code, and fenced code blocks, anywhere that `pymdownx.mark` (`==text==`) cannot reach.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.highlight
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.highlight"])
+html = md.convert("This has a \<^>highlighted word\<^> in it.")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

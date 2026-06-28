@@ -92,3 +92,7 @@ class TestSlideshowEdgeCases:
         md = markdown.Markdown(extensions=["pymdownx.superfences", "pymdownx.highlight", "do_markdown.slideshow"])
         result = md.convert("```\n[slideshow https://a.png https://b.png]\n```")
         assert '<div class="slideshow"' not in result
+
+    def test_not_wrapped_in_paragraph(self) -> None:
+        result = render_slideshow("[slideshow https://a.png https://b.png]")
+        assert "<p><div" not in result

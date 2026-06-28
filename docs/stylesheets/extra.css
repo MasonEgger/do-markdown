@@ -27,9 +27,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75em 1.5em;
-    font-size: 1rem;
-    min-height: 3.25em;
+    padding: 0.5em 1em;
+    font-size: 0.75rem;
     font-family: var(--md-code-font-family);
     position: relative;
     z-index: 2;
@@ -52,12 +51,23 @@
     margin: 0 0 0.25rem;
 }
 
-/* Highlight marks: yellow, visible in prose and inside code. */
+/* Highlight marks: a rounded yellow pill in prose. box-decoration-break keeps
+   it intact across line wraps instead of breaking into stepped boxes. */
 .md-typeset mark {
     background: #ffe175;
-    border-radius: 0.375rem;
+    border-radius: 0.2em;
     color: inherit;
-    padding: 0.1em 0.3em;
+    padding: 0.12em 0.25em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+/* Inside code blocks a single highlight becomes several per-token <mark>
+   fragments. Drop the horizontal padding and corner radius so the fragments
+   butt together into one continuous bar instead of separate bumps. */
+.md-typeset .highlight mark {
+    padding: 0.12em 0;
+    border-radius: 0;
 }
 
 /* Environments tint the whole block, one color each (DO light palette). */
@@ -107,6 +117,19 @@ pre.prefixed code ol li::before {
     color: var(--md-code-fg-color);
     user-select: none;
     -webkit-user-select: none;
+}
+
+/* Command / super-user / custom prompts: a tidy left-aligned gutter so the
+   prompt sits flush with the block edge and the command follows after a single
+   space, instead of the stray indent line numbers don't have. */
+pre.prefixed:not(.line_numbers) code ol li {
+    margin-left: -0.25rem;
+}
+
+pre.prefixed:not(.line_numbers) code ol li::before {
+    min-width: 1ch;
+    text-align: left;
+    margin: 0 0.5rem 0 0.25rem;
 }
 
 /* Line numbers — separator bar with widths that grow with the line count. */

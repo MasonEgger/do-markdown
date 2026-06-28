@@ -2,14 +2,16 @@
 
 Embeds CodePen pens with configurable theme, default tab, height, and behavior flags.
 
-## Configuration
+## Usage
 
-```yaml
-markdown_extensions:
-  - do_markdown.codepen
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["do_markdown.codepen"])
+html = md.convert("[codepen MattCowley vwPzeX]")
 ```
 
-No configuration options.
+See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

@@ -131,7 +131,7 @@ class CodePenPreprocessor(Preprocessor):
                     f" on <a href='https://codepen.io'>CodePen</a>.</span>\n"
                     f"</p>"
                 )
-                output.append(embed_html)
+                output.append(self.md.htmlStash.store(embed_html))
             else:
                 output.append(line)
 
