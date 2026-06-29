@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import markdown
 
+from markwright.twitter import apply_html, expand_source
+
 
 def render(source: str) -> str:
     """Render Markdown source with the Twitter extension loaded."""
@@ -124,3 +126,34 @@ class TestTwitterEdgeCases:
     def test_not_wrapped_in_paragraph(self) -> None:
         result = render("[twitter https://twitter.com/U/status/1]")
         assert "<p><div" not in result
+
+
+class TestTwitterStageFunctions:
+    """Tests for the pure expand_source and apply_html stage functions."""
+
+    def test_expand_source_emits_signature(self) -> None:
+        result = expand_source("[twitter https://twitter.com/User/status/123]")
+        assert 'class="twitter-tweet"' in result
+        assert "https://twitter.com/User/status/123" in result
+
+    def test_expand_source_no_stash_placeholder(self) -> None:
+        result = expand_source("[twitter https://twitter.com/User/status/123]")
+        assert "\x02" not in result
+
+    def test_apply_html_injects_one_script(self) -> None:
+        result = apply_html('<blockquote class="twitter-tweet"></blockquote>')
+        assert result.count("widgets.js") == 1
+
+    def test_apply_html_idempotent(self) -> None:
+        once = apply_html('<blockquote class="twitter-tweet"></blockquote>')
+        twice = apply_html(once)
+        assert twice.count("widgets.js") == 1
+
+    def test_apply_html_no_signature_no_script(self) -> None:
+        result = apply_html("<p>nothing here</p>")
+        assert "widgets.js" not in result
+
+    def test_apply_html_warnings_stay_empty(self) -> None:
+        warnings: list[str] = []
+        apply_html('<blockquote class="twitter-tweet"></blockquote>', warnings)
+        assert warnings == []

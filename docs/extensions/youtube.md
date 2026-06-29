@@ -11,7 +11,7 @@ md = markdown.Markdown(extensions=["markwright.youtube"])
 html = md.convert("[youtube dQw4w9WgXcQ]")
 ```
 
-See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
+See [Using with MkDocs](../integrations/mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

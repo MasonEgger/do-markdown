@@ -20,6 +20,8 @@ TWITTER_MIN_WIDTH = 250
 TWITTER_MAX_WIDTH = 550
 TWITTER_DEFAULT_WIDTH = 550
 
+TWITTER_SIGNATURE = 'class="twitter-tweet"'
+
 TWITTER_SCRIPT = '<script async defer src="https://platform.twitter.com/widgets.js"></script>'
 
 
@@ -52,21 +54,75 @@ def _parse_twitter_flags(raw_flags: str) -> dict[str, str | int]:
     }
 
 
+def _render_match(line: str) -> str | None:
+    """Build the Twitter embed HTML for a standalone embed line.
+
+    :param line: A single source line.
+    :returns: The embed HTML if the line is a Twitter embed, else ``None``.
+    """
+    twitter_match = TWITTER_RE.match(line.strip())
+    if not twitter_match:
+        return None
+
+    user = twitter_match.group(2)
+    status_id = twitter_match.group(3)
+    raw_flags = twitter_match.group(4).strip()
+    settings = _parse_twitter_flags(raw_flags)
+
+    # Canonicalize to twitter.com
+    canonical_url = f"https://twitter.com/{user}/status/{status_id}"
+    escaped_url = html.escape(canonical_url)
+    escaped_user = html.escape(user)
+
+    theme = settings["theme"]
+    alignment = settings["alignment"]
+    width = settings["width"]
+
+    align_attr = f' align="{alignment}"' if alignment != "center" else ""
+
+    return (
+        f'<div class="twitter"{align_attr}>\n'
+        f'    <blockquote class="twitter-tweet" data-dnt="true"'
+        f' data-width="{width}" data-theme="{theme}">\n'
+        f'        <a href="{escaped_url}">View tweet by @{escaped_user}</a>\n'
+        f"    </blockquote>\n"
+        f"</div>"
+    )
+
+
+def expand_source(text: str) -> str:
+    """Expand standalone Twitter embed lines to embed HTML in raw source.
+
+    Used by the ``mw pre`` CLI stage. Unlike the preprocessor, this emits the
+    HTML inline without any Python-Markdown stash placeholder.
+
+    :param text: The source text.
+    :returns: The text with standalone Twitter embeds replaced by HTML.
+    """
+    return "\n".join(_render_match(line) or line for line in text.split("\n"))
+
+
+def apply_html(rendered_html: str, warnings: list[str] | None = None) -> str:
+    """Inject the Twitter widgets script once if a Twitter embed is present.
+
+    Used by the ``mw post`` CLI stage and the in-process postprocessor. The
+    script is appended only when the Twitter class signature is present and the
+    script is not already injected, so the transform is idempotent.
+
+    :param rendered_html: Rendered HTML content.
+    :param warnings: Optional warnings list; unused (signature injection never warns).
+    :returns: HTML with the Twitter script appended if needed.
+    """
+    if TWITTER_SIGNATURE in rendered_html and TWITTER_SCRIPT not in rendered_html:
+        return rendered_html + "\n" + TWITTER_SCRIPT
+    return rendered_html
+
+
 class TwitterPreprocessor(Preprocessor):
     """Replace [twitter ...] lines with Twitter embed HTML.
 
     :param md: The Markdown instance.
     """
-
-    found: bool
-
-    def __init__(self, md: Markdown) -> None:
-        """Initialize the preprocessor.
-
-        :param md: The Markdown instance.
-        """
-        super().__init__(md)
-        self.found = False
 
     def run(self, lines: list[str]) -> list[str]:
         """Process lines, replacing Twitter embed syntax with HTML.
@@ -74,70 +130,29 @@ class TwitterPreprocessor(Preprocessor):
         :param lines: Source lines to process.
         :returns: Modified lines with Twitter embeds replaced by HTML.
         """
-        self.found = False
         output: list[str] = []
-
         for line in lines:
-            stripped_line = line.strip()
-            twitter_match = TWITTER_RE.match(stripped_line)
-            if twitter_match:
-                self.found = True
-                user = twitter_match.group(2)
-                status_id = twitter_match.group(3)
-                raw_flags = twitter_match.group(4).strip()
-                settings = _parse_twitter_flags(raw_flags)
-
-                # Canonicalize to twitter.com
-                canonical_url = f"https://twitter.com/{user}/status/{status_id}"
-                escaped_url = html.escape(canonical_url)
-                escaped_user = html.escape(user)
-
-                theme = settings["theme"]
-                alignment = settings["alignment"]
-                width = settings["width"]
-
-                align_attr = f' align="{alignment}"' if alignment != "center" else ""
-
-                embed_html = (
-                    f'<div class="twitter"{align_attr}>\n'
-                    f'    <blockquote class="twitter-tweet" data-dnt="true"'
-                    f' data-width="{width}" data-theme="{theme}">\n'
-                    f'        <a href="{escaped_url}">View tweet by @{escaped_user}</a>\n'
-                    f"    </blockquote>\n"
-                    f"</div>"
-                )
+            embed_html = _render_match(line)
+            if embed_html is not None:
                 output.append(self.md.htmlStash.store(embed_html))
             else:
                 output.append(line)
-
         return output
 
 
 class TwitterPostprocessor(Postprocessor):
-    """Append the Twitter widgets script tag once if any embeds were found.
+    """Append the Twitter widgets script tag once if any embeds are present.
 
     :param md: The Markdown instance.
-    :param preprocessor: The TwitterPreprocessor to check for found embeds.
     """
 
-    def __init__(self, md: Markdown, preprocessor: TwitterPreprocessor) -> None:
-        """Initialize the postprocessor with a reference to the preprocessor.
-
-        :param md: The Markdown instance.
-        :param preprocessor: The TwitterPreprocessor to check for found embeds.
-        """
-        super().__init__(md)
-        self.preprocessor = preprocessor
-
     def run(self, text: str) -> str:
-        """Append script tag if Twitter embeds were found.
+        """Append the script tag if a Twitter embed signature is present.
 
         :param text: Rendered HTML content.
         :returns: HTML with Twitter script appended if needed.
         """
-        if self.preprocessor.found:
-            return text + "\n" + TWITTER_SCRIPT
-        return text
+        return apply_html(text)
 
 
 class TwitterExtension(Extension):
@@ -152,7 +167,7 @@ class TwitterExtension(Extension):
         :param md: The Markdown instance to extend.
         """
         preprocessor = TwitterPreprocessor(md)
-        postprocessor = TwitterPostprocessor(md, preprocessor)
+        postprocessor = TwitterPostprocessor(md)
         md.preprocessors.register(preprocessor, "do-twitter", 20)
         md.postprocessors.register(postprocessor, "do-twitter-script", 15)
 

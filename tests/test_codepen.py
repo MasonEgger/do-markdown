@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import markdown
 
+from markwright.codepen import apply_html, expand_source
+
 
 def render(source: str) -> str:
     """Render Markdown source with the CodePen extension loaded."""
@@ -136,3 +138,34 @@ class TestCodePenEdgeCases:
     def test_not_wrapped_in_paragraph(self) -> None:
         result = render("[codepen User Hash]")
         assert "<p><p" not in result
+
+
+class TestCodePenStageFunctions:
+    """Tests for the pure expand_source and apply_html stage functions."""
+
+    def test_expand_source_emits_signature(self) -> None:
+        result = expand_source("[codepen MattCowley vwPzeX]")
+        assert 'class="codepen"' in result
+        assert 'data-slug-hash="vwPzeX"' in result
+
+    def test_expand_source_no_stash_placeholder(self) -> None:
+        result = expand_source("[codepen MattCowley vwPzeX]")
+        assert "\x02" not in result
+
+    def test_apply_html_injects_one_script(self) -> None:
+        result = apply_html('<p class="codepen" data-slug-hash="vwPzeX"></p>')
+        assert result.count("ei.js") == 1
+
+    def test_apply_html_idempotent(self) -> None:
+        once = apply_html('<p class="codepen"></p>')
+        twice = apply_html(once)
+        assert twice.count("ei.js") == 1
+
+    def test_apply_html_no_signature_no_script(self) -> None:
+        result = apply_html("<p>nothing here</p>")
+        assert "ei.js" not in result
+
+    def test_apply_html_warnings_stay_empty(self) -> None:
+        warnings: list[str] = []
+        apply_html('<p class="codepen"></p>', warnings)
+        assert warnings == []

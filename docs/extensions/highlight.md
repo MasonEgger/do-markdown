@@ -12,7 +12,7 @@ md = markdown.Markdown(extensions=["markwright.highlight"])
 html = md.convert("This has a \<^>highlighted word\<^> in it.")
 ```
 
-See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
+See [Using with MkDocs](../integrations/mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

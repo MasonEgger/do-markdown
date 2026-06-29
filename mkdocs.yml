@@ -54,7 +54,10 @@ extra_css:
 
 nav:
   - Home: index.md
-  - Using with MkDocs: using-with-mkdocs.md
+  - CLI:
+      - Reference: cli.md
+      - Pipeline Guide: pipeline.md
+      - Renderer Requirements: renderer-requirements.md
   - Extensions:
       - Highlight: extensions/highlight.md
       - Fence: extensions/fence.md
@@ -64,4 +67,7 @@ nav:
       - Instagram: extensions/instagram.md
       - Slideshow: extensions/slideshow.md
       - Image Compare: extensions/image-compare.md
+  - Integrations:
+      - MkDocs: integrations/mkdocs.md
+      - Hugo: integrations/hugo.md
   - Demo: demo.md

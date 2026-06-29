@@ -11,7 +11,7 @@ md = markdown.Markdown(extensions=["markwright.slideshow"])
 html = md.convert("[slideshow https://example.com/a.jpg https://example.com/b.jpg]")
 ```
 
-See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
+See [Using with MkDocs](../integrations/mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 

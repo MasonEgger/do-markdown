@@ -11,7 +11,7 @@ md = markdown.Markdown(extensions=["markwright.twitter"])
 html = md.convert("[twitter https://twitter.com/User/status/123]")
 ```
 
-See [Using with MkDocs](../using-with-mkdocs.md) to load it in a MkDocs site.
+See [Using with MkDocs](../integrations/mkdocs.md) to load it in a MkDocs site.
 
 ## Syntax
 
